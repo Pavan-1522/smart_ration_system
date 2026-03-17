@@ -5,40 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AP PDS: Ration Card Admin Portal</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-
   <style>
-    /* ══════════════════════════════════════════════
-       RESET & VARIABLES
-    ══════════════════════════════════════════════ */
+    /* ════════════════════════════════════════
+       RESET & DESIGN TOKENS
+    ════════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --navy:       #0a2342;
-      --navy-mid:   #123261;
-      --blue:       #1a56db;
-      --blue-lt:    #3b82f6;
-      --blue-pale:  #dbeafe;
-      --accent:     #f59e0b;
-      --teal:       #0d9488;
-      --teal-pale:  #ccfbf1;
-      --red:        #dc2626;
-      --red-pale:   #fee2e2;
-      --green:      #16a34a;
-      --green-pale: #dcfce7;
-      --bg:         #f0f4f9;
-      --surface:    #ffffff;
-      --border:     #d1dbe8;
-      --text:       #1e293b;
-      --muted:      #64748b;
-      --radius:     10px;
-      --shadow:     0 4px 24px rgba(10,35,66,.09);
-      --shadow-sm:  0 2px 8px rgba(10,35,66,.07);
-      --font:       'DM Sans', sans-serif;
-      --mono:       'IBM Plex Mono', monospace;
+      --navy:        #0a2342;
+      --navy-mid:    #123261;
+      --blue:        #1a56db;
+      --blue-lt:     #3b82f6;
+      --blue-pale:   #dbeafe;
+      --accent:      #f59e0b;
+      --teal:        #0d9488;
+      --teal-pale:   #ccfbf1;
+      --red:         #dc2626;
+      --red-pale:    #fee2e2;
+      --green:       #16a34a;
+      --green-mid:   #15803d;
+      --green-pale:  #dcfce7;
+      --violet:      #7c3aed;
+      --violet-pale: #ede9fe;
+      --bg:          #f0f4f9;
+      --surface:     #ffffff;
+      --border:      #d1dbe8;
+      --text:        #1e293b;
+      --muted:       #64748b;
+      --radius:      10px;
+      --shadow:      0 4px 24px rgba(10,35,66,.09);
+      --shadow-sm:   0 2px 8px rgba(10,35,66,.07);
+      --font:        'DM Sans', sans-serif;
+      --mono:        'IBM Plex Mono', monospace;
     }
 
     html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
-
     body {
       font-family: var(--font);
       background: var(--bg);
@@ -47,18 +48,16 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ══════════════════════════════════════════════
+    /* ════════════════════════════════════════
        MASTHEAD
-    ══════════════════════════════════════════════ */
+    ════════════════════════════════════════ */
     .masthead {
       background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
-      padding: 0 16px;
-      border-bottom: 4px solid var(--accent);
+      padding: 0 16px; border-bottom: 4px solid var(--accent);
       position: relative; overflow: hidden;
     }
     .masthead::before {
-      content: "";
-      position: absolute; inset: 0;
+      content: ""; position: absolute; inset: 0;
       background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
     }
     .masthead-inner {
@@ -79,354 +78,217 @@
       color: rgba(255,255,255,.55); font-weight: 500; margin-bottom: 3px;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .masthead-text h1 {
-      font-size: clamp(13px, 3.5vw, 19px); font-weight: 700; color: #fff; line-height: 1.25;
-    }
+    .masthead-text h1 { font-size: clamp(13px,3.5vw,19px); font-weight: 700; color: #fff; line-height: 1.25; }
     .masthead-text h1 span { color: var(--accent); }
     .masthead-badge {
       background: var(--accent); color: var(--navy);
-      font-size: 9px; font-weight: 700; letter-spacing: .08em;
-      text-transform: uppercase; padding: 4px 9px; border-radius: 4px;
-      white-space: nowrap; flex-shrink: 0;
+      font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 4px; white-space: nowrap; flex-shrink: 0;
     }
     @media (max-width: 400px) { .masthead-badge { display: none; } }
-
     .strip { height: 4px; background: linear-gradient(90deg,var(--teal),var(--blue),var(--accent)); }
 
-    /* ══════════════════════════════════════════════
-       TAB NAV — mobile scrollable
-    ══════════════════════════════════════════════ */
+    /* ════════════════════════════════════════
+       TAB NAV
+    ════════════════════════════════════════ */
     .tab-nav {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-      position: sticky; top: 0; z-index: 100;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-sm); position: sticky; top: 0; z-index: 100;
+      overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
     }
     .tab-nav::-webkit-scrollbar { display: none; }
-
-    .tab-nav-inner {
-      max-width: 980px; margin: 0 auto;
-      display: flex; padding: 0 12px;
-      min-width: max-content;
-    }
+    .tab-nav-inner { max-width: 980px; margin: 0 auto; display: flex; padding: 0 12px; min-width: max-content; }
     .tab-btn {
-      display: flex; align-items: center; gap: 7px;
-      padding: 14px 18px;
+      display: flex; align-items: center; gap: 7px; padding: 14px 18px;
       font-family: var(--font); font-size: 13px; font-weight: 600;
       color: var(--muted); background: none; border: none;
       border-bottom: 3px solid transparent; cursor: pointer;
-      transition: color .2s, border-color .2s;
-      white-space: nowrap; flex-shrink: 0;
-      -webkit-tap-highlight-color: transparent;
+      transition: color .2s, border-color .2s; white-space: nowrap; flex-shrink: 0;
     }
-    .tab-btn .tab-icon { font-size: 15px; }
     .tab-btn:hover { color: var(--blue); }
     .tab-btn.active { color: var(--navy); border-bottom-color: var(--blue); }
     .tab-badge {
       background: var(--blue); color: #fff;
-      font-size: 10px; font-weight: 700;
-      padding: 2px 6px; border-radius: 10px; min-width: 18px; text-align: center;
+      font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px; min-width: 18px; text-align: center;
     }
 
-    /* ══════════════════════════════════════════════
-       PAGE WRAP
-    ══════════════════════════════════════════════ */
+    /* ════════════════════════════════════════
+       PAGE WRAP & PANELS
+    ════════════════════════════════════════ */
     .page-wrap { max-width: 980px; margin: 0 auto; padding: 20px 12px 60px; }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* ══════════════════════════════════════════════
-       SECTION CARDS
-    ══════════════════════════════════════════════ */
     .section-card {
       background: var(--surface); border-radius: var(--radius);
-      box-shadow: var(--shadow); border: 1px solid var(--border);
-      margin-bottom: 20px; overflow: hidden;
+      box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 20px; overflow: hidden;
     }
     .section-head {
       display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
       padding: 16px 18px; border-bottom: 1px solid var(--border);
       background: linear-gradient(90deg,#f8fafc,#fff);
     }
-    .section-icon {
-      width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center; font-size: 17px;
-    }
-    .icon-blue { background: var(--blue-pale); }
-    .icon-teal { background: var(--teal-pale); }
-    .icon-red  { background: var(--red-pale); }
+    .section-icon { width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+    .icon-blue   { background: var(--blue-pale); }
+    .icon-teal   { background: var(--teal-pale); }
+    .icon-red    { background: var(--red-pale); }
+    .icon-violet { background: var(--violet-pale); }
+    .icon-green  { background: var(--green-pale); }
     .section-title { font-size: 14px; font-weight: 600; color: var(--navy); }
     .section-subtitle { font-size: 12px; color: var(--muted); margin-top: 1px; }
     .section-body { padding: 18px; }
 
-    /* ══════════════════════════════════════════════
-       FORM FIELDS — fully mobile-first
-    ══════════════════════════════════════════════ */
-    .field-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
+    /* ════════════════════════════════════════
+       FORM FIELDS
+    ════════════════════════════════════════ */
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     @media (max-width: 520px) { .field-row { grid-template-columns: 1fr; gap: 12px; } }
-
     .field-group { display: flex; flex-direction: column; gap: 6px; }
-    .field-group label {
-      font-size: 12px; font-weight: 600; color: var(--navy);
-      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
-    }
-    .hint {
-      font-weight: 400; font-size: 10.5px; color: var(--muted);
-      background: #f1f5f9; padding: 2px 6px; border-radius: 4px;
-    }
+    .field-group label { font-size: 12px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .hint { font-weight: 400; font-size: 10.5px; color: var(--muted); background: #f1f5f9; padding: 2px 6px; border-radius: 4px; }
 
     input[type="text"], input[type="number"], input[type="tel"],
     input[type="password"], input[type="search"], select {
-      width: 100%;
-      padding: 11px 14px;
+      width: 100%; padding: 11px 14px;
       border: 1.5px solid var(--border); border-radius: 8px;
       font-family: var(--font); font-size: 15px; color: var(--text);
-      background: #fafcff;
-      transition: border-color .2s, box-shadow .2s, background .2s;
-      outline: none; appearance: none;
-      /* Better tap target on mobile */
-      min-height: 44px;
+      background: #fafcff; transition: border-color .2s, box-shadow .2s, background .2s;
+      outline: none; appearance: none; min-height: 44px;
     }
-    input:focus, select:focus {
-      border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,86,219,.1); background: #fff;
-    }
+    input:focus, select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,86,219,.1); background: #fff; }
     input::placeholder { color: #adb5c5; }
-
-    #card-uid, .uid-mono {
-      font-family: var(--mono); letter-spacing: .12em;
-      font-size: 15px; text-transform: uppercase;
-    }
+    #card-uid, .uid-mono { font-family: var(--mono); letter-spacing: .12em; font-size: 15px; text-transform: uppercase; }
 
     .select-wrap { position: relative; }
-    .select-wrap::after {
-      content: "▾"; position: absolute; right: 13px; top: 50%;
-      transform: translateY(-50%); pointer-events: none;
-      color: var(--muted); font-size: 14px;
-    }
+    .select-wrap::after { content: "▾"; position: absolute; right: 13px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--muted); font-size: 14px; }
     .select-wrap select { padding-right: 34px; cursor: pointer; }
 
-    .count-display {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--blue-pale); color: var(--navy-mid);
-      font-size: 13px; font-weight: 600;
-      padding: 6px 14px; border-radius: 20px; margin-top: 4px;
-    }
-    #count-badge {
-      background: var(--blue); color: #fff;
-      width: 22px; height: 22px; border-radius: 50%;
-      display: inline-flex; align-items: center; justify-content: center; font-size: 13px;
-    }
+    .count-display { display: inline-flex; align-items: center; gap: 8px; background: var(--blue-pale); color: var(--navy-mid); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 20px; margin-top: 4px; }
+    #count-badge { background: var(--blue); color: #fff; width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; }
 
-    /* ══════════════════════════════════════════════
-       QUOTA CHIPS
-    ══════════════════════════════════════════════ */
     .quota-preview { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-    .quota-chip {
-      display: flex; align-items: center; gap: 7px;
-      background: linear-gradient(135deg,#f0fdf4,#dcfce7);
-      border: 1px solid #bbf7d0; border-radius: 8px;
-      padding: 8px 14px; font-size: 13px; color: #166534;
-    }
+    .quota-chip { display: flex; align-items: center; gap: 7px; background: linear-gradient(135deg,#f0fdf4,#dcfce7); border: 1px solid #bbf7d0; border-radius: 8px; padding: 8px 14px; font-size: 13px; color: #166534; }
     .quota-chip .qval { font-family: var(--mono); font-size: 15px; font-weight: 600; color: #15803d; }
 
-    /* ══════════════════════════════════════════════
-       MEMBER CARDS (register)
-    ══════════════════════════════════════════════ */
-    .member-card {
-      background: #f8faff; border: 1.5px solid #e2eaf7;
-      border-radius: var(--radius); overflow: hidden; margin-bottom: 14px;
-      opacity: 0; transform: translateY(10px);
-      transition: opacity .3s ease, transform .3s ease;
-    }
+    /* ════════════════════════════════════════
+       MEMBER CARDS
+    ════════════════════════════════════════ */
+    .member-card { background: #f8faff; border: 1.5px solid #e2eaf7; border-radius: var(--radius); overflow: hidden; margin-bottom: 14px; opacity: 0; transform: translateY(10px); transition: opacity .3s ease, transform .3s ease; }
     .member-card.animate-in { opacity: 1; transform: translateY(0); }
-    .member-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 16px;
-      background: linear-gradient(90deg, var(--navy) 0%, var(--navy-mid) 100%);
-    }
+    .member-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: linear-gradient(90deg, var(--navy), var(--navy-mid)); }
     .member-index { font-size: 13px; font-weight: 600; color: #fff; }
     .member-tag { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.5); }
-    .member-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 16px;
-    }
+    .member-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 16px; }
     @media (max-width: 480px) { .member-grid { grid-template-columns: 1fr; gap: 12px; } }
+    .auto-badge { font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; background: #fef3c7; color: #92400e; border: 1px solid #fde68a; padding: 2px 8px; border-radius: 4px; margin-left: auto; }
 
-    .auto-badge {
-      font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
-      background: #fef3c7; color: #92400e; border: 1px solid #fde68a;
-      padding: 2px 8px; border-radius: 4px; margin-left: auto;
-    }
+    /* ════════════════════════════════════════
+       BUTTONS
+    ════════════════════════════════════════ */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin-after::after { content: ""; display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; margin-left: 10px; vertical-align: middle; }
 
-    /* ══════════════════════════════════════════════
-       BUTTONS — all min 44px tall for mobile
-    ══════════════════════════════════════════════ */
     .submit-wrap { display: flex; justify-content: center; margin-top: 8px; }
     #submit-btn {
       background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
-      color: #fff; border: none; border-radius: 9px;
-      padding: 14px 32px; font-family: var(--font); font-size: 15px; font-weight: 600;
-      cursor: pointer; display: flex; align-items: center; gap: 10px;
+      color: #fff; border: none; border-radius: 9px; padding: 14px 32px;
+      font-family: var(--font); font-size: 15px; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: 10px;
       box-shadow: 0 6px 20px rgba(26,86,219,.35);
       transition: transform .15s, box-shadow .15s, opacity .15s;
-      width: 100%; max-width: 340px; justify-content: center;
-      min-height: 52px;
+      width: 100%; max-width: 340px; justify-content: center; min-height: 52px;
     }
     #submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(26,86,219,.45); }
-    #submit-btn:active:not(:disabled) { transform: translateY(0); }
     #submit-btn:disabled { opacity: .7; cursor: not-allowed; }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .spin-after::after {
-      content: ""; display: inline-block; width: 13px; height: 13px;
-      border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
-      border-radius: 50%; animation: spin .7s linear infinite; margin-left: 10px; vertical-align: middle;
-    }
-
-    .btn-refresh {
-      display: flex; align-items: center; gap: 6px;
-      background: var(--blue); color: #fff; border: none; border-radius: 7px;
-      padding: 10px 16px; font-family: var(--font); font-size: 13px; font-weight: 600;
-      cursor: pointer; transition: background .2s; min-height: 44px;
-      white-space: nowrap;
-    }
+    .btn-refresh { display: flex; align-items: center; gap: 6px; background: var(--blue); color: #fff; border: none; border-radius: 7px; padding: 10px 16px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; transition: background .2s; min-height: 44px; white-space: nowrap; }
     .btn-refresh:hover { background: var(--navy); }
 
-    .btn-load {
-      padding: 11px 22px; background: var(--navy); color: #fff;
-      border: none; border-radius: 7px; font-family: var(--font);
-      font-size: 13px; font-weight: 600; cursor: pointer;
-      transition: background .2s; min-height: 44px; white-space: nowrap;
-    }
+    .btn-load { padding: 11px 22px; background: var(--navy); color: #fff; border: none; border-radius: 7px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; transition: background .2s; min-height: 44px; white-space: nowrap; }
     .btn-load:hover { background: var(--blue); }
 
-    /* ══════════════════════════════════════════════
-       VIEW CARDS — search bar
-    ══════════════════════════════════════════════ */
-    .search-bar-wrap {
-      display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
-    }
+    /* ════════════════════════════════════════
+       VIEW CARDS
+    ════════════════════════════════════════ */
+    .search-bar-wrap { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
     .search-bar-wrap input { flex: 1; min-width: 140px; }
 
-    /* ══════════════════════════════════════════════
-       CARDS GRID — responsive
-    ══════════════════════════════════════════════ */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 16px;
-    }
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
     @media (max-width: 360px) { .cards-grid { grid-template-columns: 1fr; } }
 
     .ration-card-tile {
       background: var(--surface); border: 1.5px solid var(--border);
-      border-radius: var(--radius); overflow: hidden;
-      box-shadow: var(--shadow-sm);
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);
       transition: box-shadow .2s, transform .2s;
     }
     .ration-card-tile:hover { box-shadow: 0 6px 22px rgba(10,35,66,.14); transform: translateY(-2px); }
 
-    .rct-header {
-      background: linear-gradient(135deg, var(--navy), var(--navy-mid));
-      padding: 12px 14px; display: flex; align-items: center; gap: 10px;
-    }
+    .rct-header { background: linear-gradient(135deg, var(--navy), var(--navy-mid)); padding: 12px 14px; display: flex; align-items: center; gap: 10px; }
     .rct-uid { font-family: var(--mono); font-size: 14px; font-weight: 500; color: #fff; letter-spacing: .1em; flex: 1; }
+
+    /* Wallet badge on card header */
+    .rct-wallet-badge {
+      display: flex; align-items: center; gap: 4px;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 12px; padding: 3px 9px;
+      font-family: var(--mono); font-size: 11px; color: #fff; white-space: nowrap;
+    }
+    .rct-wallet-badge.low { background: rgba(220,38,38,.25); border-color: rgba(220,38,38,.4); color: #fca5a5; }
+
     .rct-body { padding: 12px 14px; }
     .rct-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
     .rct-row:last-child { margin-bottom: 0; }
     .rct-label { font-size: 11px; color: var(--muted); font-weight: 500; }
     .rct-value { font-size: 12.5px; font-weight: 600; color: var(--navy); }
+    .rct-value.balance { font-family: var(--mono); color: var(--green-mid); }
+    .rct-value.balance.low { color: var(--red); }
 
-    /* 3 buttons: view / edit / delete */
-    .rct-actions { padding: 0 14px 12px; display: grid; grid-template-columns: 1fr 1fr 44px; gap: 7px; }
-    .btn-view-detail, .btn-edit-card, .btn-delete-card {
-      padding: 9px 0; border-radius: 6px; border: none;
-      font-family: var(--font); font-size: 12px; font-weight: 600; cursor: pointer;
-      transition: background .2s, transform .1s;
-      min-height: 40px; display: flex; align-items: center; justify-content: center;
-    }
+    .rct-actions { padding: 0 14px 12px; display: grid; grid-template-columns: 1fr 1fr 1fr 44px; gap: 7px; }
+    .btn-rct { padding: 9px 0; border-radius: 6px; border: none; font-family: var(--font); font-size: 11.5px; font-weight: 600; cursor: pointer; transition: background .2s; min-height: 40px; display: flex; align-items: center; justify-content: center; gap: 4px; }
     .btn-view-detail { background: var(--blue-pale); color: var(--blue); }
     .btn-view-detail:hover { background: #bfdbfe; }
     .btn-edit-card { background: var(--teal-pale); color: var(--teal); }
     .btn-edit-card:hover { background: #99f6e4; }
+    .btn-recharge-card { background: var(--violet-pale); color: var(--violet); }
+    .btn-recharge-card:hover { background: #ddd6fe; }
     .btn-delete-card { background: var(--red-pale); color: var(--red); font-size: 16px; }
     .btn-delete-card:hover { background: #fecaca; }
-    .btn-delete-card:active { transform: scale(.92); }
 
-    /* ══════════════════════════════════════════════
-       EMPTY / LOADING STATES
-    ══════════════════════════════════════════════ */
     .state-empty { text-align: center; padding: 50px 20px; color: var(--muted); }
     .state-empty .state-icon { font-size: 44px; margin-bottom: 12px; }
     .state-empty p { font-size: 14px; }
 
-    /* ══════════════════════════════════════════════
-       DETAIL MODAL — mobile full-screen on small
-    ══════════════════════════════════════════════ */
+    /* ════════════════════════════════════════
+       DETAIL MODAL
+    ════════════════════════════════════════ */
     .modal-overlay {
-      position: fixed; inset: 0; background: rgba(10,35,66,.55);
-      z-index: 500; display: flex; align-items: flex-end;
-      padding: 0; opacity: 0; pointer-events: none;
+      position: fixed; inset: 0; background: rgba(10,35,66,.55); z-index: 500;
+      display: flex; align-items: flex-end; padding: 0; opacity: 0; pointer-events: none;
       transition: opacity .25s ease;
     }
-    @media (min-width: 600px) {
-      .modal-overlay { align-items: center; padding: 20px; }
-    }
+    @media (min-width: 600px) { .modal-overlay { align-items: center; padding: 20px; } }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
-
     .modal {
-      background: var(--surface);
-      border-radius: 16px 16px 0 0;
+      background: var(--surface); border-radius: 16px 16px 0 0;
       box-shadow: 0 -8px 40px rgba(10,35,66,.2);
-      width: 100%; max-height: 90vh;
-      overflow-y: auto;
-      transform: translateY(30px);
-      transition: transform .3s cubic-bezier(.4,0,.2,1);
+      width: 100%; max-height: 90vh; overflow-y: auto;
+      transform: translateY(30px); transition: transform .3s cubic-bezier(.4,0,.2,1);
     }
-    @media (min-width: 600px) {
-      .modal { border-radius: 14px; max-width: 680px; transform: translateY(18px) scale(.97); }
-      .modal-overlay.open .modal { transform: translateY(0) scale(1); }
-    }
-    .modal-overlay.open .modal { transform: translateY(0); }
-
-    /* drag handle for mobile */
-    .modal-handle {
-      width: 40px; height: 4px; background: #d1dbe8;
-      border-radius: 2px; margin: 10px auto 0;
-    }
+    @media (min-width: 600px) { .modal { border-radius: 14px; max-width: 680px; transform: translateY(18px) scale(.97); } }
+    .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+    .modal-handle { width: 40px; height: 4px; background: #d1dbe8; border-radius: 2px; margin: 10px auto 0; }
     @media (min-width: 600px) { .modal-handle { display: none; } }
-
-    .modal-head {
-      position: sticky; top: 0;
-      background: linear-gradient(135deg, var(--navy), var(--navy-mid));
-      padding: 16px 18px; display: flex; align-items: center; gap: 12px; z-index: 2;
-    }
+    .modal-head { position: sticky; top: 0; background: linear-gradient(135deg, var(--navy), var(--navy-mid)); padding: 16px 18px; display: flex; align-items: center; gap: 12px; z-index: 2; }
     .modal-head-title { flex: 1; min-width: 0; }
     .mh-label { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 2px; }
     .mh-uid { font-family: var(--mono); font-size: 16px; color: #fff; letter-spacing: .1em; }
-    .modal-close {
-      background: rgba(255,255,255,.15); border: none; color: #fff;
-      width: 34px; height: 34px; border-radius: 50%; font-size: 18px;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: background .2s; flex-shrink: 0;
-    }
+    .modal-close { background: rgba(255,255,255,.15); border: none; color: #fff; width: 34px; height: 34px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; flex-shrink: 0; }
     .modal-close:hover { background: rgba(255,255,255,.28); }
     .modal-body { padding: 18px; }
 
-    /* ── Members table — horizontal scroll on mobile */
     .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 4px; }
     .members-table { width: 100%; border-collapse: collapse; min-width: 400px; }
-    .members-table th {
-      background: #f1f5f9; font-size: 11px; font-weight: 600; letter-spacing: .06em;
-      text-transform: uppercase; color: var(--muted); padding: 9px 11px; text-align: left;
-      border-bottom: 1px solid var(--border); white-space: nowrap;
-    }
+    .members-table th { background: #f1f5f9; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: 9px 11px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
     .members-table td { padding: 10px 11px; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
     .members-table tr:last-child td { border-bottom: none; }
     .members-table tr:hover td { background: #fafcff; }
@@ -434,165 +296,233 @@
     .pwd-mask { cursor: pointer; user-select: none; color: var(--blue); }
 
     .quota-info-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
-    .qi-chip {
-      display: flex; align-items: center; gap: 6px;
-      background: var(--green-pale); border: 1px solid #bbf7d0;
-      border-radius: 7px; padding: 7px 12px; font-size: 13px; color: #166534;
-    }
+    .qi-chip { display: flex; align-items: center; gap: 6px; background: var(--green-pale); border: 1px solid #bbf7d0; border-radius: 7px; padding: 7px 12px; font-size: 13px; color: #166534; }
     .qi-chip strong { font-family: var(--mono); }
+    .qi-chip.wallet { background: var(--violet-pale); border-color: #c4b5fd; color: var(--violet); }
+    .qi-chip.wallet strong { color: var(--violet); }
 
-    /* ══════════════════════════════════════════════
-       CONFIRM MODAL (delete)
-    ══════════════════════════════════════════════ */
-    .confirm-overlay {
-      position: fixed; inset: 0; background: rgba(10,35,66,.6);
-      z-index: 600; display: flex; align-items: center; justify-content: center;
-      padding: 20px; opacity: 0; pointer-events: none;
-      transition: opacity .2s ease;
+    /* ════════════════════════════════════════
+       RECHARGE MODAL
+    ════════════════════════════════════════ */
+    .recharge-overlay {
+      position: fixed; inset: 0; background: rgba(10,35,66,.6); z-index: 600;
+      display: flex; align-items: center; justify-content: center; padding: 16px;
+      opacity: 0; pointer-events: none; transition: opacity .25s ease;
     }
+    .recharge-overlay.open { opacity: 1; pointer-events: all; }
+
+    .recharge-modal {
+      background: var(--surface); border-radius: 18px;
+      box-shadow: 0 24px 64px rgba(10,35,66,.22);
+      width: 100%; max-width: 420px;
+      transform: translateY(20px) scale(.96);
+      transition: transform .28s cubic-bezier(.4,0,.2,1);
+      overflow: hidden;
+    }
+    .recharge-overlay.open .recharge-modal { transform: translateY(0) scale(1); }
+
+    .rch-header {
+      background: linear-gradient(135deg, var(--violet) 0%, #5b21b6 100%);
+      padding: 20px 22px; position: relative; overflow: hidden;
+    }
+    .rch-header::before {
+      content: ""; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='20' cy='20' r='10'/%3E%3C/g%3E%3C/svg%3E");
+    }
+    .rch-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px; position: relative; }
+    .rch-uid-lbl { font-family: var(--mono); font-size: 13px; color: rgba(255,255,255,.7); letter-spacing: .1em; position: relative; }
+    .rch-close { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,.15); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; font-size: 17px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+    .rch-close:hover { background: rgba(255,255,255,.28); }
+
+    .rch-body { padding: 22px; }
+
+    /* Current balance display */
+    .rch-balance-row { display: flex; align-items: center; justify-content: space-between; background: #f8faff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; }
+    .rch-bal-label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 3px; }
+    .rch-bal-amount { font-family: var(--mono); font-size: 26px; font-weight: 700; color: var(--green-mid); }
+    .rch-bal-amount.low { color: var(--red); }
+    .wallet-icon { font-size: 32px; }
+
+    /* Quick amount pills */
+    .rch-quick-label { font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 10px; letter-spacing: .06em; text-transform: uppercase; }
+    .rch-quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 18px; }
+    .rch-pill {
+      padding: 10px 6px; border: 1.5px solid var(--border); border-radius: 8px;
+      text-align: center; cursor: pointer; font-family: var(--mono); font-size: 13px; font-weight: 600;
+      color: var(--navy); background: #fafcff; transition: all .15s;
+    }
+    .rch-pill:hover { border-color: var(--violet); color: var(--violet); background: var(--violet-pale); }
+    .rch-pill.selected { border-color: var(--violet); background: var(--violet-pale); color: var(--violet); }
+
+    /* Custom amount input */
+    .rch-custom-wrap { position: relative; margin-bottom: 20px; }
+    .rch-custom-wrap .rupee-prefix {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      font-family: var(--mono); font-size: 16px; color: var(--muted); pointer-events: none;
+    }
+    .rch-amount-input {
+      width: 100%; padding: 13px 14px 13px 30px;
+      border: 1.5px solid var(--border); border-radius: 9px;
+      font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--navy);
+      background: #fafcff; outline: none; transition: border-color .2s, box-shadow .2s;
+    }
+    .rch-amount-input:focus { border-color: var(--violet); box-shadow: 0 0 0 3px rgba(124,58,237,.1); }
+
+    .btn-pay {
+      width: 100%; padding: 15px; border: none; border-radius: 10px;
+      background: linear-gradient(135deg, var(--violet) 0%, #5b21b6 100%);
+      color: #fff; font-family: var(--font); font-size: 16px; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+      box-shadow: 0 6px 20px rgba(124,58,237,.4);
+      transition: transform .15s, box-shadow .15s, opacity .15s; min-height: 54px;
+    }
+    .btn-pay:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(124,58,237,.5); }
+    .btn-pay:disabled { opacity: .6; cursor: not-allowed; }
+    .btn-pay.loading::after { content: ""; display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; margin-left: 10px; vertical-align: middle; }
+
+    .rch-note { font-size: 11.5px; color: var(--muted); text-align: center; margin-top: 12px; line-height: 1.5; }
+    .rch-note strong { color: var(--violet); }
+
+    /* ════════════════════════════════════════
+       PAYMENT CONFIRMATION DIALOG
+    ════════════════════════════════════════ */
+    .pay-confirm-overlay {
+      position: fixed; inset: 0; background: rgba(10,35,66,.65); z-index: 700;
+      display: flex; align-items: center; justify-content: center; padding: 16px;
+      opacity: 0; pointer-events: none; transition: opacity .25s ease;
+    }
+    .pay-confirm-overlay.open { opacity: 1; pointer-events: all; }
+
+    .pay-confirm-box {
+      background: var(--surface); border-radius: 20px;
+      box-shadow: 0 24px 72px rgba(10,35,66,.28);
+      width: 100%; max-width: 360px; padding: 0;
+      transform: scale(.88); transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+      overflow: hidden;
+    }
+    .pay-confirm-overlay.open .pay-confirm-box { transform: scale(1); }
+
+    /* success state */
+    .pcb-success-banner {
+      background: linear-gradient(135deg, #059669, #047857);
+      padding: 28px 24px 20px; text-align: center; position: relative; overflow: hidden;
+    }
+    .pcb-success-banner::before {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(circle at 70% 30%, rgba(255,255,255,.08), transparent 60%);
+    }
+    .pcb-check-circle {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: rgba(255,255,255,.2); border: 3px solid rgba(255,255,255,.5);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px; margin: 0 auto 12px;
+      animation: popIn .4s cubic-bezier(.34,1.56,.64,1) .1s both;
+    }
+    @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .pcb-success-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; position: relative; }
+    .pcb-success-sub { font-size: 13px; color: rgba(255,255,255,.75); position: relative; }
+
+    .pcb-body { padding: 20px 22px 24px; }
+
+    /* receipt rows */
+    .receipt { background: #f8faff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 18px; }
+    .receipt-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid #f1f5f9; }
+    .receipt-row:last-child { border-bottom: none; }
+    .receipt-key { font-size: 12px; color: var(--muted); font-weight: 500; }
+    .receipt-val { font-size: 13px; font-weight: 700; color: var(--navy); }
+    .receipt-val.mono { font-family: var(--mono); letter-spacing: .06em; }
+    .receipt-val.green { color: var(--green-mid); font-family: var(--mono); font-size: 15px; }
+    .receipt-val.violet { color: var(--violet); font-family: var(--mono); }
+
+    .new-balance-row {
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--green-pale); border: 1px solid #bbf7d0; border-radius: 10px;
+      padding: 12px 16px; margin-bottom: 18px;
+    }
+    .nb-label { font-size: 12px; font-weight: 600; color: var(--green-mid); text-transform: uppercase; letter-spacing: .07em; }
+    .nb-amount { font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--green-mid); }
+
+    .btn-pcb-done {
+      width: 100%; padding: 14px; border: none; border-radius: 10px;
+      background: linear-gradient(135deg, #059669, #047857); color: #fff;
+      font-family: var(--font); font-size: 15px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(5,150,105,.35); transition: transform .15s; min-height: 50px;
+    }
+    .btn-pcb-done:hover { transform: translateY(-1px); }
+
+    /* ════════════════════════════════════════
+       CONFIRM DELETE MODAL
+    ════════════════════════════════════════ */
+    .confirm-overlay { position: fixed; inset: 0; background: rgba(10,35,66,.6); z-index: 600; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .2s ease; }
     .confirm-overlay.open { opacity: 1; pointer-events: all; }
-    .confirm-box {
-      background: var(--surface); border-radius: 14px;
-      box-shadow: 0 16px 48px rgba(10,35,66,.22);
-      width: 100%; max-width: 380px;
-      padding: 28px 24px;
-      transform: scale(.94);
-      transition: transform .2s ease;
-      text-align: center;
-    }
+    .confirm-box { background: var(--surface); border-radius: 14px; box-shadow: 0 16px 48px rgba(10,35,66,.22); width: 100%; max-width: 360px; padding: 28px 24px; transform: scale(.94); transition: transform .2s ease; text-align: center; }
     .confirm-overlay.open .confirm-box { transform: scale(1); }
     .confirm-icon { font-size: 44px; margin-bottom: 12px; }
     .confirm-title { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
-    .confirm-uid-display {
-      display: inline-block;
-      font-family: var(--mono); font-size: 14px; letter-spacing: .12em;
-      background: var(--red-pale); color: var(--red);
-      padding: 4px 12px; border-radius: 6px; margin-bottom: 14px;
-    }
+    .confirm-uid-display { display: inline-block; font-family: var(--mono); font-size: 14px; letter-spacing: .12em; background: var(--red-pale); color: var(--red); padding: 4px 12px; border-radius: 6px; margin-bottom: 14px; }
     .confirm-msg { font-size: 13.5px; color: var(--muted); margin-bottom: 22px; line-height: 1.5; }
     .confirm-actions { display: flex; gap: 10px; }
-    .btn-confirm-cancel {
-      flex: 1; padding: 12px; background: #f1f5f9; color: var(--muted);
-      border: 1.5px solid var(--border); border-radius: 8px;
-      font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer;
-      transition: background .2s; min-height: 48px;
-    }
+    .btn-confirm-cancel { flex: 1; padding: 12px; background: #f1f5f9; color: var(--muted); border: 1.5px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; transition: background .2s; min-height: 48px; }
     .btn-confirm-cancel:hover { background: #e2e8f0; }
-    .btn-confirm-delete {
-      flex: 1; padding: 12px; background: var(--red); color: #fff;
-      border: none; border-radius: 8px;
-      font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer;
-      box-shadow: 0 4px 14px rgba(220,38,38,.35);
-      transition: background .2s, transform .1s; min-height: 48px;
-    }
+    .btn-confirm-delete { flex: 1; padding: 12px; background: var(--red); color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 14px rgba(220,38,38,.35); transition: background .2s; min-height: 48px; }
     .btn-confirm-delete:hover { background: #b91c1c; }
-    .btn-confirm-delete:active { transform: scale(.96); }
-    .btn-confirm-delete.loading::after {
-      content: ""; display: inline-block; width: 13px; height: 13px;
-      border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
-      border-radius: 50%; animation: spin .7s linear infinite; margin-left: 8px; vertical-align: middle;
-    }
+    .btn-confirm-delete.loading::after { content: ""; display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; margin-left: 8px; vertical-align: middle; }
 
-    /* ══════════════════════════════════════════════
-       DELETE CARD TAB
-    ══════════════════════════════════════════════ */
-    .delete-search-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
-    .delete-search-row .field-group { flex: 1; min-width: 160px; }
+    /* ════════════════════════════════════════
+       EDIT & DELETE TABS
+    ════════════════════════════════════════ */
+    .edit-search-row, .delete-search-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+    .edit-search-row .field-group, .delete-search-row .field-group { flex: 1; min-width: 160px; }
+    #edit-form-wrap { display: none; }
+    .edit-member-card { background: #f4fffe; border: 1.5px solid #b2f0e8; border-radius: var(--radius); overflow: hidden; margin-bottom: 14px; }
+    .edit-member-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: linear-gradient(90deg, var(--teal), #0f766e); }
+    .edit-member-label { font-size: 13px; font-weight: 600; color: #fff; }
+    .edit-member-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 16px; }
+    @media (max-width: 480px) { .edit-member-grid { grid-template-columns: 1fr; gap: 12px; } }
+    .edit-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+    .btn-save-edit { background: linear-gradient(135deg, var(--teal), #0f766e); color: #fff; border: none; border-radius: 9px; padding: 13px 32px; font-family: var(--font); font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 6px 20px rgba(13,148,136,.35); transition: transform .15s, box-shadow .15s, opacity .15s; flex: 1; max-width: 260px; justify-content: center; min-height: 50px; }
+    .btn-save-edit:hover:not(:disabled) { transform: translateY(-2px); }
+    .btn-save-edit:disabled { opacity: .7; cursor: not-allowed; }
+    .btn-cancel-edit { background: #f1f5f9; color: var(--muted); border: 1.5px solid var(--border); border-radius: 9px; padding: 13px 24px; font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; transition: background .2s; min-height: 50px; }
+    .btn-cancel-edit:hover { background: #e2e8f0; }
 
-    .card-preview-box {
-      display: none;
-      background: #fff8f8; border: 1.5px solid #fecaca;
-      border-radius: var(--radius); overflow: hidden; margin-top: 6px;
-    }
-    .cpb-header {
-      background: linear-gradient(90deg, var(--red), #b91c1c);
-      padding: 10px 16px; display: flex; align-items: center; gap: 10px;
-    }
+    /* Delete tab preview */
+    .card-preview-box { display: none; background: #fff8f8; border: 1.5px solid #fecaca; border-radius: var(--radius); overflow: hidden; margin-top: 6px; }
+    .cpb-header { background: linear-gradient(90deg, var(--red), #b91c1c); padding: 10px 16px; display: flex; align-items: center; gap: 10px; }
     .cpb-uid { font-family: var(--mono); font-size: 14px; color: #fff; letter-spacing: .1em; flex: 1; }
     .cpb-body { padding: 14px 16px; }
     .cpb-row { display: flex; justify-content: space-between; margin-bottom: 7px; font-size: 13px; }
     .cpb-row:last-child { margin-bottom: 0; }
     .cpb-label { color: var(--muted); }
     .cpb-value { font-weight: 600; color: var(--navy); }
-    .btn-do-delete {
-      width: 100%; margin-top: 14px; padding: 14px;
-      background: var(--red); color: #fff; border: none; border-radius: 8px;
-      font-family: var(--font); font-size: 15px; font-weight: 600; cursor: pointer;
-      box-shadow: 0 4px 14px rgba(220,38,38,.3);
-      transition: background .2s, transform .1s; min-height: 50px;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
+    .btn-do-delete { width: 100%; margin-top: 14px; padding: 14px; background: var(--red); color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 14px rgba(220,38,38,.3); transition: background .2s; min-height: 50px; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .btn-do-delete:hover { background: #b91c1c; }
-    .btn-do-delete:active { transform: scale(.98); }
 
-    /* ══════════════════════════════════════════════
-       EDIT TAB
-    ══════════════════════════════════════════════ */
-    .edit-search-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
-    .edit-search-row .field-group { flex: 1; min-width: 160px; }
+    /* Wallet info banner in delete tab */
+    .warn-box { border-left: 4px solid #fbbf24; background: #fffbeb; border-radius: 8px; padding: 14px 16px; display: flex; gap: 12px; }
+    .warn-box .wi { font-size: 20px; flex-shrink: 0; }
 
-    #edit-form-wrap { display: none; }
-    .edit-member-card {
-      background: #f4fffe; border: 1.5px solid #b2f0e8;
-      border-radius: var(--radius); overflow: hidden; margin-bottom: 14px;
-    }
-    .edit-member-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 16px;
-      background: linear-gradient(90deg, var(--teal) 0%, #0f766e 100%);
-    }
-    .edit-member-label { font-size: 13px; font-weight: 600; color: #fff; }
-    .edit-member-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 16px;
-    }
-    @media (max-width: 480px) { .edit-member-grid { grid-template-columns: 1fr; gap: 12px; } }
+    /* ════════════════════════════════════════
+       RECHARGE TAB
+    ════════════════════════════════════════ */
+    .recharge-tab-search { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+    .recharge-tab-search .field-group { flex: 1; min-width: 160px; }
 
-    .edit-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
-    .btn-save-edit {
-      background: linear-gradient(135deg, var(--teal), #0f766e);
-      color: #fff; border: none; border-radius: 9px;
-      padding: 13px 32px; font-family: var(--font); font-size: 15px; font-weight: 600;
-      cursor: pointer; display: flex; align-items: center; gap: 8px;
-      box-shadow: 0 6px 20px rgba(13,148,136,.35);
-      transition: transform .15s, box-shadow .15s, opacity .15s;
-      flex: 1; max-width: 260px; justify-content: center; min-height: 50px;
-    }
-    .btn-save-edit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(13,148,136,.45); }
-    .btn-save-edit:disabled { opacity: .7; cursor: not-allowed; }
-    .btn-cancel-edit {
-      background: #f1f5f9; color: var(--muted); border: 1.5px solid var(--border);
-      border-radius: 9px; padding: 13px 24px; font-family: var(--font); font-size: 14px;
-      font-weight: 600; cursor: pointer; transition: background .2s; min-height: 50px;
-    }
-    .btn-cancel-edit:hover { background: #e2e8f0; }
-
-    /* ══════════════════════════════════════════════
-       TOAST NOTIFICATIONS
-    ══════════════════════════════════════════════ */
-    .toast {
-      position: fixed; bottom: 20px; left: 50%;
-      transform: translateX(-50%) translateY(16px); opacity: 0;
-      display: flex; align-items: center; gap: 10px;
-      padding: 13px 20px; border-radius: 10px;
-      font-size: 14px; font-weight: 500;
-      box-shadow: 0 8px 32px rgba(0,0,0,.18);
-      transition: opacity .3s ease, transform .3s ease;
-      z-index: 9999; max-width: calc(100vw - 32px);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
+    /* ════════════════════════════════════════
+       TOAST
+    ════════════════════════════════════════ */
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(16px); opacity: 0; display: flex; align-items: center; gap: 10px; padding: 13px 20px; border-radius: 10px; font-size: 14px; font-weight: 500; box-shadow: 0 8px 32px rgba(0,0,0,.18); transition: opacity .3s ease, transform .3s ease; z-index: 9999; max-width: calc(100vw - 32px); }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .toast-success { background: #15803d; color: #fff; }
     .toast-error   { background: #dc2626; color: #fff; }
+    .toast-info    { background: var(--violet); color: #fff; }
 
-    footer {
-      text-align: center; padding: 20px 16px;
-      font-size: 11px; color: var(--muted); letter-spacing: .04em;
-    }
+    footer { text-align: center; padding: 20px 16px; font-size: 11px; color: var(--muted); letter-spacing: .04em; }
   </style>
 </head>
 <body>
 
-<!-- ── MASTHEAD ─────────────────────────────────────────────────────── -->
+<!-- ══ MASTHEAD ════════════════════════════════════════════════════════ -->
 <header class="masthead">
   <div class="masthead-inner">
     <div class="gov-emblem">
@@ -612,60 +542,38 @@
 </header>
 <div class="strip"></div>
 
-<!-- ── TAB NAV ──────────────────────────────────────────────────────── -->
+<!-- ══ TAB NAV ═══════════════════════════════════════════════════════ -->
 <nav class="tab-nav">
   <div class="tab-nav-inner">
-    <button class="tab-btn active" data-tab="register">
-      <span class="tab-icon">📋</span> Register
-    </button>
-    <button class="tab-btn" data-tab="view">
-      <span class="tab-icon">🗂️</span> View Cards
-      <span class="tab-badge" id="cards-count-badge">0</span>
-    </button>
-    <button class="tab-btn" data-tab="edit">
-      <span class="tab-icon">✏️</span> Edit
-    </button>
-    <button class="tab-btn" data-tab="delete">
-      <span class="tab-icon">🗑️</span> Delete
-    </button>
+    <button class="tab-btn active" data-tab="register"><span class="tab-icon">📋</span> Register</button>
+    <button class="tab-btn" data-tab="view"><span class="tab-icon">🗂️</span> View Cards <span class="tab-badge" id="cards-count-badge">0</span></button>
+    <button class="tab-btn" data-tab="recharge"><span class="tab-icon">💳</span> Recharge</button>
+    <button class="tab-btn" data-tab="edit"><span class="tab-icon">✏️</span> Edit</button>
+    <button class="tab-btn" data-tab="delete"><span class="tab-icon">🗑️</span> Delete</button>
   </div>
 </nav>
 
 <div class="page-wrap">
 
-  <!-- ══════════ TAB: REGISTER ══════════ -->
+  <!-- ════ TAB: REGISTER ════ -->
   <div id="tab-register" class="tab-panel active">
     <form id="registration-form" novalidate>
-
       <div class="section-card">
         <div class="section-head">
           <div class="section-icon icon-blue">🪪</div>
-          <div>
-            <div class="section-title">RFID Card Details</div>
-            <div class="section-subtitle">Scan or enter the card UID and household size</div>
-          </div>
+          <div><div class="section-title">RFID Card Details</div><div class="section-subtitle">Scan or enter the card UID and household size</div></div>
         </div>
         <div class="section-body">
           <div class="field-row">
             <div class="field-group">
               <label for="card-uid">Card UID <span class="hint">8 chars</span></label>
-              <input type="text" id="card-uid" placeholder="e.g. A3F9C201"
-                     maxlength="8" minlength="8" autocomplete="off" required/>
+              <input type="text" id="card-uid" placeholder="e.g. A3F9C201" maxlength="8" minlength="8" autocomplete="off" required/>
             </div>
             <div class="field-group">
               <label for="member-count">Total Family Members</label>
               <div class="select-wrap">
                 <select id="member-count" required>
-                  <option value="1">1 Member</option>
-                  <option value="2">2 Members</option>
-                  <option value="3">3 Members</option>
-                  <option value="4">4 Members</option>
-                  <option value="5">5 Members</option>
-                  <option value="6">6 Members</option>
-                  <option value="7">7 Members</option>
-                  <option value="8">8 Members</option>
-                  <option value="9">9 Members</option>
-                  <option value="10">10 Members</option>
+                  <option value="1">1 Member</option><option value="2">2 Members</option><option value="3">3 Members</option><option value="4">4 Members</option><option value="5">5 Members</option><option value="6">6 Members</option><option value="7">7 Members</option><option value="8">8 Members</option><option value="9">9 Members</option><option value="10">10 Members</option>
                 </select>
               </div>
               <div class="count-display">Members: <span id="count-badge">1</span></div>
@@ -677,10 +585,7 @@
       <div class="section-card">
         <div class="section-head">
           <div class="section-icon icon-teal">🌾</div>
-          <div>
-            <div class="section-title">Monthly Ration Quota</div>
-            <div class="section-subtitle">Auto-calculated based on member count</div>
-          </div>
+          <div><div class="section-title">Monthly Ration Quota</div><div class="section-subtitle">Auto-calculated based on member count</div></div>
           <span class="auto-badge">Auto</span>
         </div>
         <div class="section-body">
@@ -688,19 +593,33 @@
             <div class="quota-chip">🍚 Rice: <span class="qval">5</span> kg/person</div>
             <div class="quota-chip">🍬 Sugar: <span class="qval" id="sugar-val">1</span> pkt(s)</div>
           </div>
-          <p style="margin-top:10px;font-size:12px;color:var(--muted);">
-            Rice fixed at 5 kg/person · Sugar packets = total family members.
-          </p>
+          <p style="margin-top:10px;font-size:12px;color:var(--muted);">Rice fixed at 5 kg/person · Sugar packets = total family members.</p>
+        </div>
+      </div>
+
+      <!-- Initial Wallet Amount -->
+      <div class="section-card">
+        <div class="section-head">
+          <div class="section-icon icon-violet">💰</div>
+          <div><div class="section-title">Initial Wallet Balance</div><div class="section-subtitle">Starting amount available to any member on this card</div></div>
+        </div>
+        <div class="section-body">
+          <div class="field-row">
+            <div class="field-group">
+              <label for="initial-amount">Amount (₹) <span class="hint">Optional, default ₹0</span></label>
+              <input type="number" id="initial-amount" placeholder="e.g. 500" min="0" step="1"/>
+            </div>
+            <div style="display:flex;align-items:center;padding-top:20px;">
+              <p style="font-size:12px;color:var(--muted);line-height:1.6;">This wallet balance can be used by <strong>any member</strong> of the household at the ration dispenser using their keypad password.</p>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="section-card">
         <div class="section-head">
           <div class="section-icon icon-blue">👨‍👩‍👧</div>
-          <div>
-            <div class="section-title">Beneficiary Details</div>
-            <div class="section-subtitle">Fill details for each family member</div>
-          </div>
+          <div><div class="section-title">Beneficiary Details</div><div class="section-subtitle">Fill details for each family member</div></div>
         </div>
         <div class="section-body" style="padding-bottom:6px;">
           <div id="member-forms"></div>
@@ -708,25 +627,18 @@
       </div>
 
       <div class="submit-wrap">
-        <button type="submit" id="submit-btn">
-          <span>📋</span><span class="btn-label">Register Ration Card</span>
-        </button>
+        <button type="submit" id="submit-btn"><span>📋</span><span class="btn-label">Register Ration Card</span></button>
       </div>
     </form>
   </div>
 
-  <!-- ══════════ TAB: VIEW ══════════ -->
+  <!-- ════ TAB: VIEW ════ -->
   <div id="tab-view" class="tab-panel">
     <div class="section-card">
       <div class="section-head">
         <div class="section-icon icon-blue">🔍</div>
-        <div>
-          <div class="section-title">Search &amp; Filter</div>
-          <div class="section-subtitle">Find cards by UID</div>
-        </div>
-        <div style="margin-left:auto; flex-shrink:0">
-          <button class="btn-refresh" id="btn-refresh">⟳ Refresh</button>
-        </div>
+        <div><div class="section-title">Search &amp; Filter</div><div class="section-subtitle">Find cards by UID</div></div>
+        <div style="margin-left:auto;flex-shrink:0"><button class="btn-refresh" id="btn-refresh">⟳ Refresh</button></div>
       </div>
       <div class="section-body">
         <div class="search-bar-wrap">
@@ -735,29 +647,41 @@
       </div>
     </div>
     <div id="cards-list-wrap">
-      <div class="state-empty">
-        <div class="state-icon">📭</div>
-        <p>Tap <strong>Refresh</strong> to load registered ration cards.</p>
-      </div>
+      <div class="state-empty"><div class="state-icon">📭</div><p>Tap <strong>Refresh</strong> to load registered ration cards.</p></div>
     </div>
   </div>
 
-  <!-- ══════════ TAB: EDIT ══════════ -->
+  <!-- ════ TAB: RECHARGE ════ -->
+  <div id="tab-recharge" class="tab-panel">
+    <div class="section-card">
+      <div class="section-head">
+        <div class="section-icon icon-violet">💳</div>
+        <div><div class="section-title">Recharge Card Wallet</div><div class="section-subtitle">Add money to any ration card via Razorpay</div></div>
+      </div>
+      <div class="section-body">
+        <div class="recharge-tab-search">
+          <div class="field-group">
+            <label for="rch-tab-uid">Card UID <span class="hint">8 chars</span></label>
+            <input type="text" id="rch-tab-uid" class="uid-mono" placeholder="e.g. A3F9C201" maxlength="8"/>
+          </div>
+          <button type="button" class="btn-load" style="background:var(--violet)" id="btn-rch-find">Find &amp; Recharge</button>
+        </div>
+      </div>
+    </div>
+    <!-- Recharge info box shows after finding card -->
+    <div id="rch-tab-info" style="display:none"></div>
+  </div>
+
+  <!-- ════ TAB: EDIT ════ -->
   <div id="tab-edit" class="tab-panel">
     <div class="section-card">
       <div class="section-head">
         <div class="section-icon icon-teal">🔎</div>
-        <div>
-          <div class="section-title">Load Card for Editing</div>
-          <div class="section-subtitle">Enter Card UID to fetch &amp; edit</div>
-        </div>
+        <div><div class="section-title">Load Card for Editing</div><div class="section-subtitle">Enter Card UID to fetch &amp; edit</div></div>
       </div>
       <div class="section-body">
         <div class="edit-search-row">
-          <div class="field-group">
-            <label for="edit-uid-input">Card UID <span class="hint">8 chars</span></label>
-            <input type="text" id="edit-uid-input" class="uid-mono" placeholder="e.g. A3F9C201" maxlength="8"/>
-          </div>
+          <div class="field-group"><label for="edit-uid-input">Card UID <span class="hint">8 chars</span></label><input type="text" id="edit-uid-input" class="uid-mono" placeholder="e.g. A3F9C201" maxlength="8"/></div>
           <button type="button" class="btn-load" id="btn-load-card">Load Card</button>
         </div>
       </div>
@@ -765,56 +689,39 @@
     <div id="edit-form-wrap"></div>
   </div>
 
-  <!-- ══════════ TAB: DELETE ══════════ -->
+  <!-- ════ TAB: DELETE ════ -->
   <div id="tab-delete" class="tab-panel">
     <div class="section-card">
       <div class="section-head">
         <div class="section-icon icon-red">🗑️</div>
-        <div>
-          <div class="section-title">Delete Ration Card</div>
-          <div class="section-subtitle">Permanently remove a card from the database</div>
-        </div>
+        <div><div class="section-title">Delete Ration Card</div><div class="section-subtitle">Permanently remove a card from the database</div></div>
       </div>
       <div class="section-body">
         <div class="delete-search-row">
-          <div class="field-group">
-            <label for="delete-uid-input">Card UID <span class="hint">8 chars</span></label>
-            <input type="text" id="delete-uid-input" class="uid-mono" placeholder="e.g. A3F9C201" maxlength="8"/>
-          </div>
-          <button type="button" class="btn-load" id="btn-find-card"
-                  style="background:var(--red)" >Find Card</button>
+          <div class="field-group"><label for="delete-uid-input">Card UID <span class="hint">8 chars</span></label><input type="text" id="delete-uid-input" class="uid-mono" placeholder="e.g. A3F9C201" maxlength="8"/></div>
+          <button type="button" class="btn-load" style="background:var(--red)" id="btn-find-card">Find Card</button>
         </div>
-
         <div class="card-preview-box" id="delete-preview-box">
-          <div class="cpb-header">
-            <span style="font-size:18px">🪪</span>
-            <span class="cpb-uid" id="cpb-uid">—</span>
-          </div>
+          <div class="cpb-header"><span style="font-size:18px">🪪</span><span class="cpb-uid" id="cpb-uid">—</span></div>
           <div class="cpb-body">
             <div class="cpb-row"><span class="cpb-label">Family Members</span><span class="cpb-value" id="cpb-members">—</span></div>
             <div class="cpb-row"><span class="cpb-label">Rice Quota</span><span class="cpb-value" id="cpb-rice">—</span></div>
-            <div class="cpb-row"><span class="cpb-label">Sugar Packets</span><span class="cpb-value" id="cpb-sugar">—</span></div>
-            <div class="cpb-row"><span class="cpb-label">Member Names</span><span class="cpb-value" id="cpb-names" style="text-align:right;max-width:65%">—</span></div>
+            <div class="cpb-row"><span class="cpb-label">Wallet Balance</span><span class="cpb-value" id="cpb-balance" style="font-family:var(--mono);color:var(--violet)">—</span></div>
+            <div class="cpb-row"><span class="cpb-label">Members</span><span class="cpb-value" id="cpb-names" style="text-align:right;max-width:65%">—</span></div>
           </div>
           <div style="padding:0 16px 16px">
-            <button type="button" class="btn-do-delete" id="btn-do-delete">
-              🗑️ Permanently Delete This Card
-            </button>
+            <button type="button" class="btn-do-delete" id="btn-do-delete">🗑️ Permanently Delete This Card</button>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Warning banner -->
     <div class="section-card" style="border-color:#fecaca;background:#fff8f8;">
       <div class="section-body" style="padding:16px 18px;">
-        <div style="display:flex;align-items:flex-start;gap:12px;">
-          <span style="font-size:22px;flex-shrink:0">⚠️</span>
+        <div class="warn-box">
+          <span class="wi">⚠️</span>
           <div>
             <div style="font-size:13.5px;font-weight:700;color:var(--red);margin-bottom:4px;">Irreversible Action</div>
-            <div style="font-size:13px;color:var(--muted);line-height:1.6;">
-              Deleting a ration card permanently removes all member data, quota assignments, and dispensing history for that card from Firebase. This action <strong>cannot be undone</strong>. Ensure you have the correct Card UID before proceeding.
-            </div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.6;">Deleting a ration card permanently removes all member data, wallet balance, quota assignments and history. This action <strong>cannot be undone</strong>.</div>
           </div>
         </div>
       </div>
@@ -823,30 +730,90 @@
 
 </div><!-- /page-wrap -->
 
-<!-- ── DETAIL MODAL ──────────────────────────────────────────────────── -->
+<!-- ══ DETAIL MODAL ═══════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="detail-modal">
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-head">
-      <div class="modal-head-title">
-        <div class="mh-label">Ration Card · Full Details</div>
-        <div class="mh-uid" id="modal-uid">—</div>
-      </div>
+      <div class="modal-head-title"><div class="mh-label">Ration Card · Full Details</div><div class="mh-uid" id="modal-uid">—</div></div>
       <button class="modal-close" id="modal-close-btn">✕</button>
     </div>
     <div class="modal-body" id="modal-body"></div>
   </div>
 </div>
 
-<!-- ── CONFIRM DELETE MODAL ───────────────────────────────────────────── -->
+<!-- ══ RECHARGE MODAL ═════════════════════════════════════════════════ -->
+<div class="recharge-overlay" id="recharge-overlay">
+  <div class="recharge-modal" id="recharge-modal">
+    <div class="rch-header">
+      <div class="rch-title">💳 Recharge Wallet</div>
+      <div class="rch-uid-lbl" id="rch-uid-lbl">Card: —</div>
+      <button class="rch-close" id="rch-close-btn">✕</button>
+    </div>
+    <div class="rch-body">
+      <!-- Balance -->
+      <div class="rch-balance-row">
+        <div>
+          <div class="rch-bal-label">Current Balance</div>
+          <div class="rch-bal-amount" id="rch-bal-amount">₹0</div>
+        </div>
+        <div class="wallet-icon">💰</div>
+      </div>
+
+      <!-- Quick amounts -->
+      <div class="rch-quick-label">Quick Select</div>
+      <div class="rch-quick-grid">
+        <div class="rch-pill" data-amount="100">₹100</div>
+        <div class="rch-pill" data-amount="200">₹200</div>
+        <div class="rch-pill" data-amount="500">₹500</div>
+        <div class="rch-pill" data-amount="1000">₹1000</div>
+      </div>
+
+      <!-- Custom amount -->
+      <div class="rch-custom-wrap">
+        <span class="rupee-prefix">₹</span>
+        <input type="number" class="rch-amount-input" id="rch-amount-input" placeholder="Enter amount" min="1" step="1"/>
+      </div>
+
+      <button class="btn-pay" id="btn-pay-now">
+        <span>🔒</span> Pay with Razorpay
+      </button>
+      <div class="rch-note">Powered by <strong>Razorpay</strong> · 100% Secure Payment · UPI / Card / Net Banking</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAYMENT CONFIRMATION DIALOG ════════════════════════════════════ -->
+<div class="pay-confirm-overlay" id="pay-confirm-overlay">
+  <div class="pay-confirm-box">
+    <div class="pcb-success-banner">
+      <div class="pcb-check-circle">✅</div>
+      <div class="pcb-success-title">Payment Successful!</div>
+      <div class="pcb-success-sub">Wallet has been recharged</div>
+    </div>
+    <div class="pcb-body">
+      <div class="receipt">
+        <div class="receipt-row"><span class="receipt-key">Card UID</span><span class="receipt-val mono" id="pcb-card-uid">—</span></div>
+        <div class="receipt-row"><span class="receipt-key">Amount Paid</span><span class="receipt-val green" id="pcb-amount">₹0</span></div>
+        <div class="receipt-row"><span class="receipt-key">Payment ID</span><span class="receipt-val violet" id="pcb-payment-id">—</span></div>
+        <div class="receipt-row"><span class="receipt-key">Time</span><span class="receipt-val" id="pcb-time">—</span></div>
+      </div>
+      <div class="new-balance-row">
+        <span class="nb-label">New Wallet Balance</span>
+        <span class="nb-amount" id="pcb-new-balance">₹0</span>
+      </div>
+      <button class="btn-pcb-done" id="btn-pcb-done">✓ Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CONFIRM DELETE MODAL ════════════════════════════════════════════ -->
 <div class="confirm-overlay" id="confirm-overlay">
   <div class="confirm-box">
     <div class="confirm-icon">🗑️</div>
     <div class="confirm-title">Delete Ration Card?</div>
     <div class="confirm-uid-display" id="confirm-uid-text">—</div>
-    <div class="confirm-msg">
-      This will permanently erase all data for this card including member info and ration quota. This cannot be undone.
-    </div>
+    <div class="confirm-msg">This permanently erases all data including wallet balance. Cannot be undone.</div>
     <div class="confirm-actions">
       <button class="btn-confirm-cancel" id="confirm-cancel-btn">Cancel</button>
       <button class="btn-confirm-delete" id="confirm-delete-btn">🗑️ Delete</button>
@@ -854,13 +821,16 @@
   </div>
 </div>
 
-<footer>AP PDS · Automatic Ration Dispenser System · Admin Portal &nbsp;|&nbsp; Secured on Firebase RTDB</footer>
+<footer>AP PDS · Automatic Ration Dispenser System · Admin Portal &nbsp;|&nbsp; Secured on Firebase RTDB &nbsp;|&nbsp; Payments by Razorpay</footer>
 
-<!-- ── FIREBASE + APP LOGIC ──────────────────────────────────────────── -->
+<!-- Razorpay SDK must load before the module script below -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<!-- ══ FIREBASE + APP LOGIC ════════════════════════════════════════════ -->
 <script type="module">
-  // ═══════════════════════════════════════════════════════
-  // FIREBASE CONFIG — paste yours here
-  // ═══════════════════════════════════════════════════════
+  // ══════════════════════════════════════════════════════
+  // ▸ STEP 1: Firebase config
+  // ══════════════════════════════════════════════════════
   const firebaseConfig = {
     apiKey: "AIzaSyBD9I0SpHlw4HmXsZ2mgMHs_QGXN5S2Zhg",
     authDomain: "smart-ration-system-2a546.firebaseapp.com",
@@ -870,48 +840,55 @@
     messagingSenderId: "491925808591",
     appId: "1:491925808591:web:ee8234a2666f8e36655eba"
   };
-  // ═══════════════════════════════════════════════════════
 
-  import { initializeApp }    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, set, get, remove }
+  // ══════════════════════════════════════════════════════
+  // ▸ STEP 2: Razorpay config
+  //   Replace with your actual Razorpay Key ID from
+  //   https://dashboard.razorpay.com/app/keys
+  // ══════════════════════════════════════════════════════
+  const RAZORPAY_KEY_ID = String("rzp_test_3WgTq9ybOpe62Y"); // Your Razorpay key — keep the String() wrapper
+
+  import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, set, get, remove, runTransaction }
     from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import { getFunctions, httpsCallable }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
 
-  const app = initializeApp(firebaseConfig);
-  const db  = getDatabase(app);
+  const app       = initializeApp(firebaseConfig);
+  const db        = getDatabase(app);
+  const functions = getFunctions(app, "asia-south1"); // Mumbai region — closest to AP
 
-  /* ─── TOAST ─────────────────────────────────────────────────────────── */
+  /* ─── UTILS ─────────────────────────────────────────────────── */
   function showToast(msg, type = "success") {
     const t = document.createElement("div");
     t.className = `toast toast-${type}`;
-    t.innerHTML = `<span>${type === "success" ? "✔" : "✖"}</span> ${msg}`;
+    t.innerHTML = `<span>${type === "success" ? "✔" : type === "info" ? "ℹ" : "✖"}</span> ${msg}`;
     document.body.appendChild(t);
     requestAnimationFrame(() => t.classList.add("show"));
     setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 400); }, 4500);
   }
-
-  /* ─── TAB SWITCHING ─────────────────────────────────────────────────── */
+  function escHtml(s) {
+    return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+  function fmtRupees(n) { return "₹" + parseFloat(n || 0).toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 2 }); }
   function switchTab(name) {
     document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === name));
     document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.id === `tab-${name}`));
     if (name === "view") loadAllCards();
   }
-  document.querySelectorAll(".tab-btn").forEach(btn =>
-    btn.addEventListener("click", () => switchTab(btn.dataset.tab)));
+  document.querySelectorAll(".tab-btn").forEach(b => b.addEventListener("click", () => switchTab(b.dataset.tab)));
 
-  /* ─── HTML ESCAPE ───────────────────────────────────────────────────── */
-  function escHtml(str) {
-    return String(str)
-      .replace(/&/g,"&amp;").replace(/"/g,"&quot;")
-      .replace(/</g,"&lt;").replace(/>/g,"&gt;");
-  }
+  /* ─── BODY SCROLL LOCK ──────────────────────────────────────── */
+  function lockBody()   { document.body.style.overflow = "hidden"; }
+  function unlockBody() { document.body.style.overflow = ""; }
 
-  /* ══════════════════════════════════════════════════════════════════════
+  /* ══════════════════════════════════════════════════════════════
      REGISTER TAB
-  ══════════════════════════════════════════════════════════════════════ */
+  ══════════════════════════════════════════════════════════════ */
   const memberContainer = document.getElementById("member-forms");
   const memberCountSel  = document.getElementById("member-count");
   const countBadge      = document.getElementById("count-badge");
-  const sugarVal        = document.getElementById("sugar-val");
+  const sugarValEl      = document.getElementById("sugar-val");
 
   function buildMemberForms(count) {
     memberContainer.innerHTML = "";
@@ -919,145 +896,119 @@
       const card = document.createElement("div");
       card.className = "member-card";
       card.innerHTML = `
-        <div class="member-header">
-          <span class="member-index">Member ${i + 1}</span>
-          <span class="member-tag">Beneficiary Details</span>
-        </div>
+        <div class="member-header"><span class="member-index">Member ${i + 1}</span><span class="member-tag">Beneficiary Details</span></div>
         <div class="member-grid">
-          <div class="field-group">
-            <label for="name_${i}">Full Name</label>
-            <input type="text" id="name_${i}" placeholder="Enter full name" autocomplete="off" required/>
-          </div>
-          <div class="field-group">
-            <label for="age_${i}">Age</label>
-            <input type="number" id="age_${i}" placeholder="Age" min="1" max="120" required/>
-          </div>
-          <div class="field-group">
-            <label for="phone_${i}">Phone Number</label>
-            <input type="tel" id="phone_${i}" placeholder="10-digit mobile"
-                   pattern="[0-9]{10}" maxlength="10" required/>
-          </div>
-          <div class="field-group">
-            <label for="password_${i}">Keypad Password <span class="hint">4–6 digits</span></label>
-            <input type="password" id="password_${i}" placeholder="••••"
-                   minlength="4" maxlength="6" inputmode="numeric" pattern="[0-9]{4,6}" required/>
-          </div>
+          <div class="field-group"><label for="name_${i}">Full Name</label><input type="text" id="name_${i}" placeholder="Enter full name" autocomplete="off" required/></div>
+          <div class="field-group"><label for="age_${i}">Age</label><input type="number" id="age_${i}" placeholder="Age" min="1" max="120" required/></div>
+          <div class="field-group"><label for="phone_${i}">Phone Number</label><input type="tel" id="phone_${i}" placeholder="10-digit mobile" pattern="[0-9]{10}" maxlength="10" required/></div>
+          <div class="field-group"><label for="email_${i}">Email Address <span class="hint">For payment alerts</span></label><input type="email" id="email_${i}" placeholder="member@example.com" required/></div>
+          <div class="field-group" style="grid-column:1/-1"><label for="password_${i}">Keypad Password <span class="hint">4–6 digits</span></label><input type="password" id="password_${i}" placeholder="••••" minlength="4" maxlength="6" inputmode="numeric" pattern="[0-9]{4,6}" required/></div>
         </div>`;
       memberContainer.appendChild(card);
-      requestAnimationFrame(() => {
-        card.style.animationDelay = `${i * 50}ms`;
-        card.classList.add("animate-in");
-      });
+      requestAnimationFrame(() => { card.style.animationDelay = `${i*50}ms`; card.classList.add("animate-in"); });
     }
   }
 
   memberCountSel.addEventListener("change", () => {
     const n = parseInt(memberCountSel.value, 10);
-    countBadge.textContent = n;
-    sugarVal.textContent = n;
-    buildMemberForms(n);
+    countBadge.textContent = n; sugarValEl.textContent = n; buildMemberForms(n);
   });
   buildMemberForms(1);
 
   document.getElementById("registration-form").addEventListener("submit", async e => {
     e.preventDefault();
     const btn = document.getElementById("submit-btn");
-    btn.querySelector(".btn-label").classList.add("spin-after");
-    btn.disabled = true;
+    btn.querySelector(".btn-label").classList.add("spin-after"); btn.disabled = true;
     try {
       const uid = document.getElementById("card-uid").value.trim().toUpperCase();
       if (uid.length !== 8) throw new Error("Card UID must be exactly 8 characters.");
       const total = parseInt(memberCountSel.value, 10);
-      const members = {};
+      const initAmt = parseFloat(document.getElementById("initial-amount").value) || 0;
+      const members = [];
       for (let i = 0; i < total; i++) {
         const name     = document.getElementById(`name_${i}`).value.trim();
         const age      = document.getElementById(`age_${i}`).value.trim();
         const phone    = document.getElementById(`phone_${i}`).value.trim();
+        const email    = document.getElementById(`email_${i}`).value.trim().toLowerCase();
         const password = document.getElementById(`password_${i}`).value.trim();
-        if (!name || !age || !phone || !password) throw new Error(`Fill all fields for Member ${i+1}.`);
-        members[i] = { name, age, phone, password };
+        if (!name || !age || !phone || !email || !password) throw new Error(`Fill all fields for Member ${i+1}.`);
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error(`Invalid email for Member ${i+1}.`);
+        members.push({ name, age, phone, email, password });
       }
       const payload = {
         total_members: total, members,
-        monthly_quota: { rice_kg_per_person: 5, sugar_pkts_total: total }
+        monthly_quota: { rice_kg_per_person: 5, sugar_pkts_total: total },
+        amount: initAmt
       };
       await set(ref(db, `ration_cards/${uid}`), payload);
       showToast(`Card ${uid} registered successfully!`, "success");
       e.target.reset();
-      memberCountSel.value = "1"; countBadge.textContent = "1"; sugarVal.textContent = "1";
+      memberCountSel.value = "1"; countBadge.textContent = "1"; sugarValEl.textContent = "1";
       buildMemberForms(1);
       updateCardsBadge();
-    } catch (err) {
-      console.error(err); showToast(err.message, "error");
-    } finally {
-      btn.querySelector(".btn-label").classList.remove("spin-after");
-      btn.disabled = false;
-    }
+    } catch (err) { console.error(err); showToast(err.message, "error"); }
+    finally { btn.querySelector(".btn-label").classList.remove("spin-after"); btn.disabled = false; }
   });
 
-  /* ══════════════════════════════════════════════════════════════════════
+  /* ══════════════════════════════════════════════════════════════
      VIEW CARDS TAB
-  ══════════════════════════════════════════════════════════════════════ */
+  ══════════════════════════════════════════════════════════════ */
   let allCardsCache = {};
 
   async function loadAllCards() {
     const wrap = document.getElementById("cards-list-wrap");
-    wrap.innerHTML = `<div class="state-empty"><div class="state-icon">⏳</div><p>Loading cards…</p></div>`;
+    wrap.innerHTML = `<div class="state-empty"><div class="state-icon">⏳</div><p>Loading…</p></div>`;
     try {
       const snap = await get(ref(db, "ration_cards"));
       if (!snap.exists()) {
         allCardsCache = {};
-        wrap.innerHTML = `<div class="state-empty"><div class="state-icon">📭</div><p>No ration cards registered yet.</p></div>`;
+        wrap.innerHTML = `<div class="state-empty"><div class="state-icon">📭</div><p>No cards yet.</p></div>`;
         updateCardsBadge(0); return;
       }
       allCardsCache = snap.val();
       renderCardsGrid(allCardsCache);
       updateCardsBadge(Object.keys(allCardsCache).length);
     } catch (err) {
-      console.error(err);
-      wrap.innerHTML = `<div class="state-empty"><div class="state-icon">⚠️</div><p>Failed to load: ${err.message}</p></div>`;
+      wrap.innerHTML = `<div class="state-empty"><div class="state-icon">⚠️</div><p>${err.message}</p></div>`;
     }
   }
 
   function renderCardsGrid(data) {
     const wrap = document.getElementById("cards-list-wrap");
     const keys = Object.keys(data);
-    if (!keys.length) {
-      wrap.innerHTML = `<div class="state-empty"><div class="state-icon">🔍</div><p>No cards match your search.</p></div>`;
-      return;
-    }
+    if (!keys.length) { wrap.innerHTML = `<div class="state-empty"><div class="state-icon">🔍</div><p>No cards match your search.</p></div>`; return; }
     const grid = document.createElement("div");
     grid.className = "cards-grid";
     keys.forEach(uid => {
       const c = data[uid];
+      const bal = parseFloat(c.amount || 0);
+      const low = bal < 50;
       const tile = document.createElement("div");
       tile.className = "ration-card-tile";
       tile.innerHTML = `
         <div class="rct-header">
           <span style="font-size:18px">🪪</span>
           <span class="rct-uid">${uid}</span>
+          <span class="rct-wallet-badge ${low ? 'low' : ''}">💰 ${fmtRupees(bal)}</span>
         </div>
         <div class="rct-body">
           <div class="rct-row"><span class="rct-label">Family Members</span><span class="rct-value">${c.total_members}</span></div>
           <div class="rct-row"><span class="rct-label">Rice Quota</span><span class="rct-value">${(c.monthly_quota?.rice_kg_per_person||5)*c.total_members} kg/mo</span></div>
-          <div class="rct-row"><span class="rct-label">Sugar Packets</span><span class="rct-value">${c.monthly_quota?.sugar_pkts_total ?? c.total_members}</span></div>
+          <div class="rct-row"><span class="rct-label">Wallet Balance</span><span class="rct-value balance ${low?'low':''}">${fmtRupees(bal)}</span></div>
         </div>
         <div class="rct-actions">
-          <button class="btn-view-detail" data-uid="${uid}">👁 View</button>
-          <button class="btn-edit-card"   data-uid="${uid}">✏️ Edit</button>
-          <button class="btn-delete-card" data-uid="${uid}" title="Delete card">🗑️</button>
+          <button class="btn-rct btn-view-detail"   data-uid="${uid}">👁 View</button>
+          <button class="btn-rct btn-recharge-card" data-uid="${uid}">💳 Top-up</button>
+          <button class="btn-rct btn-edit-card"     data-uid="${uid}">✏️ Edit</button>
+          <button class="btn-rct btn-delete-card"   data-uid="${uid}" title="Delete">🗑️</button>
         </div>`;
       grid.appendChild(tile);
     });
-    wrap.innerHTML = "";
-    wrap.appendChild(grid);
-
-    wrap.querySelectorAll(".btn-view-detail").forEach(btn =>
-      btn.addEventListener("click", () => openDetailModal(btn.dataset.uid, allCardsCache[btn.dataset.uid])));
-    wrap.querySelectorAll(".btn-edit-card").forEach(btn =>
-      btn.addEventListener("click", () => jumpToEdit(btn.dataset.uid)));
-    wrap.querySelectorAll(".btn-delete-card").forEach(btn =>
-      btn.addEventListener("click", () => openConfirmDelete(btn.dataset.uid)));
+    wrap.innerHTML = ""; wrap.appendChild(grid);
+    wrap.querySelectorAll(".btn-view-detail").forEach(b => b.addEventListener("click", () => openDetailModal(b.dataset.uid, allCardsCache[b.dataset.uid])));
+    wrap.querySelectorAll(".btn-edit-card").forEach(b => b.addEventListener("click", () => jumpToEdit(b.dataset.uid)));
+    wrap.querySelectorAll(".btn-recharge-card").forEach(b => b.addEventListener("click", () => openRechargeModal(b.dataset.uid, allCardsCache[b.dataset.uid])));
+    wrap.querySelectorAll(".btn-delete-card").forEach(b => b.addEventListener("click", () => openConfirmDelete(b.dataset.uid)));
   }
 
   document.getElementById("btn-refresh").addEventListener("click", loadAllCards);
@@ -1065,133 +1016,265 @@
     const q = e.target.value.trim().toUpperCase();
     if (!Object.keys(allCardsCache).length) return;
     if (!q) { renderCardsGrid(allCardsCache); return; }
-    const filtered = {};
-    Object.keys(allCardsCache).forEach(k => { if (k.includes(q)) filtered[k] = allCardsCache[k]; });
-    renderCardsGrid(filtered);
+    const f = {}; Object.keys(allCardsCache).forEach(k => { if (k.includes(q)) f[k] = allCardsCache[k]; });
+    renderCardsGrid(f);
   });
 
   async function updateCardsBadge(n) {
     const badge = document.getElementById("cards-count-badge");
     if (n !== undefined) { badge.textContent = n; return; }
-    try {
-      const snap = await get(ref(db, "ration_cards"));
-      badge.textContent = snap.exists() ? Object.keys(snap.val()).length : 0;
-    } catch (_) {}
+    try { const s = await get(ref(db,"ration_cards")); badge.textContent = s.exists() ? Object.keys(s.val()).length : 0; } catch(_) {}
   }
   updateCardsBadge();
 
-  /* ─── Detail Modal ───────────────────────────────────────────────────── */
+  /* ─── Detail Modal ───────────────────────────────────────────── */
   function openDetailModal(uid, card) {
     document.getElementById("modal-uid").textContent = uid;
     const body = document.getElementById("modal-body");
-    const members = card.members || {};
+    const members = card.members || [];
     let rows = "";
-    Object.keys(members).sort((a,b)=>+a-+b).forEach(i => {
-      const m = members[i];
-      rows += `<tr>
-        <td>${+i+1}</td>
-        <td>${escHtml(m.name)}</td>
-        <td>${escHtml(m.age)}</td>
-        <td>${escHtml(m.phone)}</td>
-        <td class="pwd-cell">
-          <span class="pwd-mask" data-pwd="${escHtml(m.password)}" data-showing="0" title="Tap to reveal">••••</span>
-        </td>
-      </tr>`;
+    members.forEach((m, i) => {
+      rows += `<tr><td>${i+1}</td><td>${escHtml(m.name)}</td><td>${escHtml(m.age)}</td><td>${escHtml(m.phone)}</td><td style="font-size:12px">${escHtml(m.email||'—')}</td>
+        <td class="pwd-cell"><span class="pwd-mask" data-pwd="${escHtml(m.password)}" data-showing="0">••••</span></td></tr>`;
     });
+    const bal = parseFloat(card.amount || 0);
     body.innerHTML = `
       <div class="quota-info-row">
         <div class="qi-chip">🍚 Rice: <strong>${(card.monthly_quota?.rice_kg_per_person||5)*card.total_members} kg</strong>/mo</div>
         <div class="qi-chip">🍬 Sugar: <strong>${card.monthly_quota?.sugar_pkts_total ?? card.total_members}</strong> pkt(s)</div>
-        <div class="qi-chip">👥 <strong>${card.total_members}</strong> members</div>
+        <div class="qi-chip wallet">💰 Wallet: <strong>${fmtRupees(bal)}</strong></div>
       </div>
       <div class="table-scroll">
         <table class="members-table">
-          <thead><tr><th>#</th><th>Name</th><th>Age</th><th>Phone</th><th>Password</th></tr></thead>
+          <thead><tr><th>#</th><th>Name</th><th>Age</th><th>Phone</th><th>Email</th><th>Password</th></tr></thead>
           <tbody>${rows}</tbody>
         </table>
       </div>
-      <p style="margin-top:12px;font-size:11.5px;color:var(--muted);">💡 Tap •••• to reveal/hide a password.</p>`;
-    body.querySelectorAll(".pwd-mask").forEach(span => {
-      span.addEventListener("click", () => {
-        const on = span.dataset.showing === "1";
-        span.textContent = on ? "••••" : span.dataset.pwd;
-        span.dataset.showing = on ? "0" : "1";
-      });
-    });
-    document.getElementById("detail-modal").classList.add("open");
-    document.body.style.overflow = "hidden";
+      <p style="margin-top:12px;font-size:11.5px;color:var(--muted);">💡 Tap •••• to reveal/hide a password. Wallet balance is shared across all members.</p>`;
+    body.querySelectorAll(".pwd-mask").forEach(s => s.addEventListener("click", () => {
+      const on = s.dataset.showing === "1"; s.textContent = on ? "••••" : s.dataset.pwd; s.dataset.showing = on ? "0" : "1";
+    }));
+    document.getElementById("detail-modal").classList.add("open"); lockBody();
   }
-
-  function closeDetailModal() {
-    document.getElementById("detail-modal").classList.remove("open");
-    document.body.style.overflow = "";
-  }
+  function closeDetailModal() { document.getElementById("detail-modal").classList.remove("open"); unlockBody(); }
   document.getElementById("modal-close-btn").addEventListener("click", closeDetailModal);
-  document.getElementById("detail-modal").addEventListener("click", e => {
-    if (e.target === e.currentTarget) closeDetailModal();
+  document.getElementById("detail-modal").addEventListener("click", e => { if (e.target === e.currentTarget) closeDetailModal(); });
+
+  /* ══════════════════════════════════════════════════════════════
+     RECHARGE MODAL + RAZORPAY
+  ══════════════════════════════════════════════════════════════ */
+  let activeRechargeUID = null;
+  let activeRechargeCard = null;
+
+  function openRechargeModal(uid, card) {
+    activeRechargeUID  = uid;
+    activeRechargeCard = card;
+    const bal = parseFloat(card.amount || 0);
+    document.getElementById("rch-uid-lbl").textContent = "Card: " + uid;
+    const balEl = document.getElementById("rch-bal-amount");
+    balEl.textContent = fmtRupees(bal);
+    balEl.className   = "rch-bal-amount" + (bal < 50 ? " low" : "");
+    document.getElementById("rch-amount-input").value = "";
+    document.querySelectorAll(".rch-pill").forEach(p => p.classList.remove("selected"));
+    document.getElementById("recharge-overlay").classList.add("open"); lockBody();
+  }
+
+  function closeRechargeModal() { document.getElementById("recharge-overlay").classList.remove("open"); unlockBody(); }
+  document.getElementById("rch-close-btn").addEventListener("click", closeRechargeModal);
+  document.getElementById("recharge-overlay").addEventListener("click", e => { if (e.target === e.currentTarget) closeRechargeModal(); });
+
+  // Quick amount pills
+  document.querySelectorAll(".rch-pill").forEach(pill => {
+    pill.addEventListener("click", () => {
+      document.querySelectorAll(".rch-pill").forEach(p => p.classList.remove("selected"));
+      pill.classList.add("selected");
+      document.getElementById("rch-amount-input").value = pill.dataset.amount;
+    });
   });
 
-  /* ══════════════════════════════════════════════════════════════════════
-     CONFIRM DELETE MODAL (from View Cards trash icon)
-  ══════════════════════════════════════════════════════════════════════ */
-  let pendingDeleteUID = null;
-
-  function openConfirmDelete(uid) {
-    pendingDeleteUID = uid;
-    document.getElementById("confirm-uid-text").textContent = uid;
-    document.getElementById("confirm-overlay").classList.add("open");
-    document.body.style.overflow = "hidden";
-  }
-  function closeConfirmDelete() {
-    document.getElementById("confirm-overlay").classList.remove("open");
-    document.body.style.overflow = "";
-    pendingDeleteUID = null;
-  }
-
-  document.getElementById("confirm-cancel-btn").addEventListener("click", closeConfirmDelete);
-  document.getElementById("confirm-overlay").addEventListener("click", e => {
-    if (e.target === e.currentTarget) closeConfirmDelete();
+  // Typing custom amount deselects pills
+  document.getElementById("rch-amount-input").addEventListener("input", () => {
+    document.querySelectorAll(".rch-pill").forEach(p => p.classList.remove("selected"));
   });
 
-  document.getElementById("confirm-delete-btn").addEventListener("click", async () => {
-    if (!pendingDeleteUID) return;
-    const uid = pendingDeleteUID;
-    const btn = document.getElementById("confirm-delete-btn");
+  // PAY NOW button → Razorpay
+  document.getElementById("btn-pay-now").addEventListener("click", () => {
+    const amt = parseFloat(document.getElementById("rch-amount-input").value);
+    if (!amt || amt < 1) { showToast("Enter a valid amount (min ₹1)", "error"); return; }
+    if (!activeRechargeUID) return;
+
+    const btn = document.getElementById("btn-pay-now");
     btn.classList.add("loading"); btn.disabled = true;
+
+    const options = {
+      key:          RAZORPAY_KEY_ID,
+      amount:       Math.round(amt * 100),   // paise
+      currency:     "INR",
+      name:         "AP PDS Ration Portal",
+      description:  `Wallet Recharge — Card ${activeRechargeUID}`,
+      image:        "https://i.imgur.com/n5tjHFD.png",
+      prefill: {
+        name:    activeRechargeCard?.members?.[0]?.name || "",
+        contact: activeRechargeCard?.members?.[0]?.phone || ""
+      },
+      notes: {
+        card_uid: activeRechargeUID
+      },
+      theme: { color: "#7c3aed" },
+
+      handler: async function(response) {
+        // Payment SUCCESS
+        try {
+          // Atomically add amount to Firebase using runTransaction
+          const cardRef = ref(db, `ration_cards/${activeRechargeUID}/amount`);
+          let newBalance = 0;
+          await runTransaction(cardRef, current => {
+            newBalance = (parseFloat(current) || 0) + amt;
+            return newBalance;
+          });
+
+          // Update local cache
+          if (allCardsCache[activeRechargeUID]) {
+            allCardsCache[activeRechargeUID].amount = newBalance;
+          }
+
+          closeRechargeModal();
+
+          // Show payment confirmation dialog
+          openPayConfirm({
+            uid:        activeRechargeUID,
+            amount:     amt,
+            paymentId:  response.razorpay_payment_id,
+            newBalance: newBalance,
+            time:       new Date().toLocaleString("en-IN")
+          });
+
+          // Refresh view grid if loaded
+          const wrap = document.getElementById("cards-list-wrap");
+          if (wrap.querySelector(".cards-grid")) renderCardsGrid(allCardsCache);
+
+          // Send payment confirmation emails to all members (non-blocking)
+          try {
+            const cardSnap = await get(ref(db, `ration_cards/${activeRechargeUID}`));
+            if (cardSnap.exists()) {
+              const cardData = cardSnap.val();
+              const sendPaymentEmail = httpsCallable(functions, "sendPaymentConfirmationEmail");
+              sendPaymentEmail({
+                cardUID:      activeRechargeUID,
+                amountPaid:   amt,
+                newBalance:   newBalance,
+                paymentId:    response.razorpay_payment_id,
+                paidAt:       new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+                members:      cardData.members || [],
+                totalMembers: cardData.total_members
+              }).then(() => {
+                showToast("📧 Confirmation emails sent to all members!", "info");
+              }).catch(err => {
+                console.warn("Email send failed (non-critical):", err.message);
+              });
+            }
+          } catch (emailErr) {
+            console.warn("Could not fetch card for email:", emailErr.message);
+          }
+
+        } catch (err) {
+          console.error("Firebase update after payment failed:", err);
+          showToast("Payment done but balance update failed! Contact support. Payment ID: " + response.razorpay_payment_id, "error");
+        }
+      },
+
+      modal: {
+        ondismiss: function() {
+          btn.classList.remove("loading"); btn.disabled = false;
+          showToast("Payment cancelled", "info");
+        }
+      }
+    };
+
     try {
-      await remove(ref(db, `ration_cards/${uid}`));
-      delete allCardsCache[uid];
-      showToast(`Card ${uid} deleted.`, "success");
-      closeConfirmDelete();
-      renderCardsGrid(allCardsCache);
-      updateCardsBadge(Object.keys(allCardsCache).length);
-    } catch (err) {
-      console.error(err); showToast(err.message, "error");
-    } finally {
+      // Access Razorpay via window to avoid module-scope issues
+      if (typeof window.Razorpay === "undefined") {
+        throw new Error("Razorpay SDK not loaded. Check your internet connection.");
+      }
+      const rzp = new window.Razorpay(options);
+      rzp.on("payment.failed", function(resp) {
+        btn.classList.remove("loading"); btn.disabled = false;
+        showToast("Payment failed: " + (resp.error?.description || "Unknown error"), "error");
+      });
+      rzp.open();
+      // Remove loading spinner once Razorpay popup opens
+      setTimeout(() => { btn.classList.remove("loading"); btn.disabled = false; }, 1200);
+    } catch(err) {
       btn.classList.remove("loading"); btn.disabled = false;
+      showToast("Could not open Razorpay: " + err.message, "error");
+      console.error("Razorpay error:", err);
     }
   });
 
-  /* ══════════════════════════════════════════════════════════════════════
-     EDIT TAB
-  ══════════════════════════════════════════════════════════════════════ */
-  function jumpToEdit(uid) {
-    switchTab("edit");
-    document.getElementById("edit-uid-input").value = uid;
-    loadCardForEdit(uid);
+  /* ─── Payment Confirmation Dialog ───────────────────────────── */
+  function openPayConfirm({ uid, amount, paymentId, newBalance, time }) {
+    document.getElementById("pcb-card-uid").textContent    = uid;
+    document.getElementById("pcb-amount").textContent      = fmtRupees(amount);
+    document.getElementById("pcb-payment-id").textContent  = paymentId;
+    document.getElementById("pcb-time").textContent        = time;
+    document.getElementById("pcb-new-balance").textContent = fmtRupees(newBalance);
+    document.getElementById("pay-confirm-overlay").classList.add("open"); lockBody();
   }
+  function closePayConfirm() { document.getElementById("pay-confirm-overlay").classList.remove("open"); unlockBody(); }
+  document.getElementById("btn-pcb-done").addEventListener("click", closePayConfirm);
+  document.getElementById("pay-confirm-overlay").addEventListener("click", e => { if (e.target === e.currentTarget) closePayConfirm(); });
+
+  /* ══════════════════════════════════════════════════════════════
+     RECHARGE TAB (standalone UID finder)
+  ══════════════════════════════════════════════════════════════ */
+  document.getElementById("btn-rch-find").addEventListener("click", () => {
+    const uid = document.getElementById("rch-tab-uid").value.trim().toUpperCase();
+    if (uid.length !== 8) { showToast("Enter a valid 8-character Card UID", "error"); return; }
+    findAndOpenRecharge(uid);
+  });
+  document.getElementById("rch-tab-uid").addEventListener("keydown", e => {
+    if (e.key === "Enter") document.getElementById("btn-rch-find").click();
+  });
+
+  async function findAndOpenRecharge(uid) {
+    const btn = document.getElementById("btn-rch-find");
+    btn.classList.add("spin-after"); btn.disabled = true;
+    try {
+      const snap = await get(ref(db, `ration_cards/${uid}`));
+      if (!snap.exists()) throw new Error(`Card "${uid}" not found.`);
+      const card = snap.val();
+      allCardsCache[uid] = card; // update cache
+      // Show info card
+      const infoWrap = document.getElementById("rch-tab-info");
+      const bal = parseFloat(card.amount || 0);
+      infoWrap.innerHTML = `
+        <div class="section-card" style="border-color:#c4b5fd;">
+          <div class="section-head" style="background:linear-gradient(90deg,#f5f3ff,#fff);">
+            <div class="section-icon icon-violet">🪪</div>
+            <div><div class="section-title">${uid}</div><div class="section-subtitle">${card.total_members} members · Wallet: <strong style="color:var(--violet)">${fmtRupees(bal)}</strong></div></div>
+            <button type="button" style="margin-left:auto;background:linear-gradient(135deg,var(--violet),#5b21b6);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;min-height:44px;" id="btn-rch-tab-open">💳 Recharge Now</button>
+          </div>
+        </div>`;
+      infoWrap.style.display = "block";
+      document.getElementById("btn-rch-tab-open").addEventListener("click", () => openRechargeModal(uid, card));
+    } catch (err) { console.error(err); showToast(err.message, "error"); }
+    finally { btn.classList.remove("spin-after"); btn.disabled = false; }
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     EDIT TAB
+  ══════════════════════════════════════════════════════════════ */
+  function jumpToEdit(uid) { switchTab("edit"); document.getElementById("edit-uid-input").value = uid; loadCardForEdit(uid); }
 
   document.getElementById("btn-load-card").addEventListener("click", () => {
     const uid = document.getElementById("edit-uid-input").value.trim().toUpperCase();
     if (uid.length !== 8) { showToast("Enter a valid 8-character Card UID", "error"); return; }
     loadCardForEdit(uid);
   });
-  document.getElementById("edit-uid-input").addEventListener("keydown", e => {
-    if (e.key === "Enter") document.getElementById("btn-load-card").click();
-  });
+  document.getElementById("edit-uid-input").addEventListener("keydown", e => { if (e.key === "Enter") document.getElementById("btn-load-card").click(); });
 
   async function loadCardForEdit(uid) {
-    const btn  = document.getElementById("btn-load-card");
+    const btn = document.getElementById("btn-load-card");
     const wrap = document.getElementById("edit-form-wrap");
     btn.classList.add("spin-after"); btn.disabled = true;
     wrap.style.display = "none"; wrap.innerHTML = "";
@@ -1201,47 +1284,27 @@
       buildEditForm(uid, snap.val());
       wrap.style.display = "block";
       setTimeout(() => wrap.scrollIntoView({ behavior:"smooth", block:"start" }), 80);
-    } catch (err) {
-      console.error(err); showToast(err.message, "error");
-    } finally {
-      btn.classList.remove("spin-after"); btn.disabled = false;
-    }
+    } catch (err) { console.error(err); showToast(err.message, "error"); }
+    finally { btn.classList.remove("spin-after"); btn.disabled = false; }
   }
 
   function buildEditForm(uid, card) {
     const wrap = document.getElementById("edit-form-wrap");
     const total = card.total_members;
-    const members = card.members || {};
+    const members = card.members || [];
+    const bal = parseFloat(card.amount || 0);
     let memberCards = "";
     for (let i = 0; i < total; i++) {
       const m = members[i] || {};
       memberCards += `
         <div class="edit-member-card">
-          <div class="edit-member-header">
-            <span class="edit-member-label">✏️ Member ${i + 1}</span>
-            <span class="member-tag">Editing</span>
-          </div>
+          <div class="edit-member-header"><span class="edit-member-label">✏️ Member ${i+1}</span><span class="member-tag">Editing</span></div>
           <div class="edit-member-grid">
-            <div class="field-group">
-              <label for="e_name_${i}">Full Name</label>
-              <input type="text" id="e_name_${i}" value="${escHtml(m.name||'')}" placeholder="Full name" required/>
-            </div>
-            <div class="field-group">
-              <label for="e_age_${i}">Age</label>
-              <input type="number" id="e_age_${i}" value="${escHtml(m.age||'')}" placeholder="Age" min="1" max="120" required/>
-            </div>
-            <div class="field-group">
-              <label for="e_phone_${i}">Phone Number</label>
-              <input type="tel" id="e_phone_${i}" value="${escHtml(m.phone||'')}"
-                     placeholder="10-digit mobile" pattern="[0-9]{10}" maxlength="10" required/>
-            </div>
-            <div class="field-group">
-              <label for="e_password_${i}">Keypad Password <span class="hint">4–6 digits</span></label>
-              <input type="text" id="e_password_${i}" value="${escHtml(m.password||'')}"
-                     placeholder="e.g. 1234" minlength="4" maxlength="6"
-                     inputmode="numeric" pattern="[0-9]{4,6}"
-                     style="font-family:var(--mono);letter-spacing:.12em" required/>
-            </div>
+            <div class="field-group"><label for="e_name_${i}">Full Name</label><input type="text" id="e_name_${i}" value="${escHtml(m.name||'')}" placeholder="Full name" required/></div>
+            <div class="field-group"><label for="e_age_${i}">Age</label><input type="number" id="e_age_${i}" value="${escHtml(m.age||'')}" placeholder="Age" min="1" max="120" required/></div>
+            <div class="field-group"><label for="e_phone_${i}">Phone Number</label><input type="tel" id="e_phone_${i}" value="${escHtml(m.phone||'')}" placeholder="10-digit mobile" pattern="[0-9]{10}" maxlength="10" required/></div>
+            <div class="field-group"><label for="e_email_${i}">Email Address <span class="hint">For payment alerts</span></label><input type="email" id="e_email_${i}" value="${escHtml(m.email||'')}" placeholder="member@example.com" required/></div>
+            <div class="field-group" style="grid-column:1/-1"><label for="e_password_${i}">Keypad Password <span class="hint">4–6 digits</span></label><input type="text" id="e_password_${i}" value="${escHtml(m.password||'')}" placeholder="e.g. 1234" minlength="4" maxlength="6" inputmode="numeric" pattern="[0-9]{4,6}" style="font-family:var(--mono);letter-spacing:.12em" required/></div>
           </div>
         </div>`;
     }
@@ -1251,76 +1314,72 @@
           <div class="section-icon icon-teal">✏️</div>
           <div>
             <div class="section-title">Editing: <span style="font-family:var(--mono);color:var(--blue)">${uid}</span></div>
-            <div class="section-subtitle">${total} member(s) · ${5*total} kg rice · ${total} sugar pkt(s)</div>
+            <div class="section-subtitle">${total} member(s) · Wallet: ${fmtRupees(bal)}</div>
           </div>
         </div>
-        <div class="section-body" style="padding-bottom:6px;">${memberCards}</div>
+        <div class="section-body" style="padding-bottom:6px;">
+          <!-- Wallet balance editable in edit mode -->
+          <div class="section-card" style="background:#f5f3ff;border-color:#c4b5fd;margin-bottom:16px;">
+            <div class="section-body" style="padding:16px;">
+              <div class="field-group">
+                <label for="e_amount" style="color:var(--violet);">💰 Wallet Balance (₹) <span class="hint">Shared by all members</span></label>
+                <input type="number" id="e_amount" value="${bal}" min="0" step="0.01" style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--violet);"/>
+              </div>
+            </div>
+          </div>
+          ${memberCards}
+        </div>
       </div>
       <div class="edit-actions">
         <button type="button" class="btn-save-edit" id="btn-save-edit">💾 <span class="se-label">Save Changes</span></button>
         <button type="button" class="btn-cancel-edit" id="btn-cancel-edit">Cancel</button>
       </div>`;
 
-    document.getElementById("btn-cancel-edit").addEventListener("click", () => {
-      wrap.style.display = "none"; wrap.innerHTML = "";
-      document.getElementById("edit-uid-input").value = "";
-    });
+    document.getElementById("btn-cancel-edit").addEventListener("click", () => { wrap.style.display = "none"; wrap.innerHTML = ""; document.getElementById("edit-uid-input").value = ""; });
     document.getElementById("btn-save-edit").addEventListener("click", () => saveEditedCard(uid, total));
   }
 
   async function saveEditedCard(uid, total) {
     const btn = document.getElementById("btn-save-edit");
-    btn.querySelector(".se-label").classList.add("spin-after");
-    btn.disabled = true;
+    btn.querySelector(".se-label").classList.add("spin-after"); btn.disabled = true;
     try {
-      const members = {};
+      const members = [];
       for (let i = 0; i < total; i++) {
         const name     = document.getElementById(`e_name_${i}`).value.trim();
         const age      = document.getElementById(`e_age_${i}`).value.trim();
         const phone    = document.getElementById(`e_phone_${i}`).value.trim();
+        const email    = document.getElementById(`e_email_${i}`).value.trim().toLowerCase();
         const password = document.getElementById(`e_password_${i}`).value.trim();
-        if (!name || !age || !phone || !password)
-          throw new Error(`Fill all fields for Member ${i+1}.`);
-        if (!/^\d{10}$/.test(phone))
-          throw new Error(`Phone for Member ${i+1} must be 10 digits.`);
-        if (!/^\d{4,6}$/.test(password))
-          throw new Error(`Password for Member ${i+1} must be 4–6 digits.`);
-        members[i] = { name, age, phone, password };
+        if (!name || !age || !phone || !email || !password) throw new Error(`Fill all fields for Member ${i+1}.`);
+        if (!/^\d{10}$/.test(phone)) throw new Error(`Phone for Member ${i+1} must be 10 digits.`);
+        if (!/^\d{4,6}$/.test(password)) throw new Error(`Password for Member ${i+1} must be 4–6 digits.`);
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error(`Invalid email for Member ${i+1}.`);
+        members.push({ name, age, phone, email, password });
       }
-      const payload = {
-        total_members: total, members,
-        monthly_quota: { rice_kg_per_person: 5, sugar_pkts_total: total }
-      };
+      const newAmt = parseFloat(document.getElementById("e_amount").value) || 0;
+      const payload = { total_members: total, members, monthly_quota: { rice_kg_per_person: 5, sugar_pkts_total: total }, amount: newAmt };
       await set(ref(db, `ration_cards/${uid}`), payload);
-      showToast(`Card ${uid} updated successfully!`, "success");
+      showToast(`Card ${uid} updated!`, "success");
       if (allCardsCache[uid]) allCardsCache[uid] = payload;
       updateCardsBadge();
-    } catch (err) {
-      console.error(err); showToast(err.message, "error");
-    } finally {
-      const lbl = document.getElementById("btn-save-edit")?.querySelector(".se-label");
-      if (lbl) lbl.classList.remove("spin-after");
-      btn.disabled = false;
-    }
+    } catch (err) { console.error(err); showToast(err.message, "error"); }
+    finally { const lbl = document.getElementById("btn-save-edit")?.querySelector(".se-label"); if(lbl) lbl.classList.remove("spin-after"); btn.disabled = false; }
   }
 
-  /* ══════════════════════════════════════════════════════════════════════
-     DELETE TAB — standalone UID lookup
-  ══════════════════════════════════════════════════════════════════════ */
+  /* ══════════════════════════════════════════════════════════════
+     DELETE TAB
+  ══════════════════════════════════════════════════════════════ */
   document.getElementById("btn-find-card").addEventListener("click", () => {
     const uid = document.getElementById("delete-uid-input").value.trim().toUpperCase();
     if (uid.length !== 8) { showToast("Enter a valid 8-character Card UID", "error"); return; }
     findCardForDelete(uid);
   });
-  document.getElementById("delete-uid-input").addEventListener("keydown", e => {
-    if (e.key === "Enter") document.getElementById("btn-find-card").click();
-  });
+  document.getElementById("delete-uid-input").addEventListener("keydown", e => { if (e.key === "Enter") document.getElementById("btn-find-card").click(); });
 
   async function findCardForDelete(uid) {
     const btn = document.getElementById("btn-find-card");
     const box = document.getElementById("delete-preview-box");
-    btn.classList.add("spin-after"); btn.disabled = true;
-    box.style.display = "none";
+    btn.classList.add("spin-after"); btn.disabled = true; box.style.display = "none";
     try {
       const snap = await get(ref(db, `ration_cards/${uid}`));
       if (!snap.exists()) throw new Error(`Card "${uid}" not found.`);
@@ -1328,36 +1387,32 @@
       document.getElementById("cpb-uid").textContent     = uid;
       document.getElementById("cpb-members").textContent  = c.total_members;
       document.getElementById("cpb-rice").textContent     = `${(c.monthly_quota?.rice_kg_per_person||5)*c.total_members} kg/month`;
-      document.getElementById("cpb-sugar").textContent    = c.monthly_quota?.sugar_pkts_total ?? c.total_members;
-      const names = Object.values(c.members||{}).map(m => m.name).join(", ");
-      document.getElementById("cpb-names").textContent    = names || "—";
-      box.style.display = "block";
-      box.scrollIntoView({ behavior:"smooth", block:"nearest" });
-    } catch (err) {
-      console.error(err); showToast(err.message, "error");
-    } finally {
-      btn.classList.remove("spin-after"); btn.disabled = false;
-    }
+      document.getElementById("cpb-balance").textContent  = fmtRupees(c.amount || 0);
+      document.getElementById("cpb-names").textContent    = (c.members||[]).map(m => m.name).join(", ") || "—";
+      box.style.display = "block"; box.scrollIntoView({ behavior:"smooth", block:"nearest" });
+    } catch (err) { console.error(err); showToast(err.message, "error"); }
+    finally { btn.classList.remove("spin-after"); btn.disabled = false; }
   }
 
   document.getElementById("btn-do-delete").addEventListener("click", () => {
     const uid = document.getElementById("delete-uid-input").value.trim().toUpperCase();
     if (!uid) return;
-    openConfirmDeleteFromTab(uid);
+    openConfirmDelete(uid);
   });
 
-  // Separate confirm handler for Delete tab (no cache to update)
-  function openConfirmDeleteFromTab(uid) {
+  /* ─── Confirm Delete ─────────────────────────────────────────── */
+  let pendingDeleteUID = null;
+
+  function openConfirmDelete(uid) {
     pendingDeleteUID = uid;
     document.getElementById("confirm-uid-text").textContent = uid;
-    // Override confirm button action to also hide preview box
-    const overlay = document.getElementById("confirm-overlay");
-    overlay.dataset.source = "delete-tab";
-    overlay.classList.add("open");
-    document.body.style.overflow = "hidden";
+    document.getElementById("confirm-overlay").classList.add("open"); lockBody();
   }
+  function closeConfirmDelete() { document.getElementById("confirm-overlay").classList.remove("open"); unlockBody(); pendingDeleteUID = null; }
 
-  // Override the confirm delete button to handle both sources
+  document.getElementById("confirm-cancel-btn").addEventListener("click", closeConfirmDelete);
+  document.getElementById("confirm-overlay").addEventListener("click", e => { if (e.target === e.currentTarget) closeConfirmDelete(); });
+
   document.getElementById("confirm-delete-btn").addEventListener("click", async () => {
     if (!pendingDeleteUID) return;
     const uid = pendingDeleteUID;
@@ -1368,21 +1423,14 @@
       delete allCardsCache[uid];
       showToast(`Card ${uid} permanently deleted.`, "success");
       closeConfirmDelete();
-      // If source was delete-tab, hide preview
       document.getElementById("delete-preview-box").style.display = "none";
       document.getElementById("delete-uid-input").value = "";
-      // Refresh view grid if it has been loaded
-      if (Object.keys(allCardsCache).length >= 0) {
-        updateCardsBadge(Object.keys(allCardsCache).length);
-        const wrap = document.getElementById("cards-list-wrap");
-        if (wrap.querySelector(".cards-grid")) renderCardsGrid(allCardsCache);
-      }
-    } catch (err) {
-      console.error(err); showToast(err.message, "error");
-    } finally {
-      btn.classList.remove("loading"); btn.disabled = false;
-    }
-  }, { once: false });
+      updateCardsBadge(Object.keys(allCardsCache).length);
+      const wrap = document.getElementById("cards-list-wrap");
+      if (wrap.querySelector(".cards-grid")) renderCardsGrid(allCardsCache);
+    } catch (err) { console.error(err); showToast(err.message, "error"); }
+    finally { btn.classList.remove("loading"); btn.disabled = false; }
+  });
 
 </script>
 </body>
