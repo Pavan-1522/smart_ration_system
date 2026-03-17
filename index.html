@@ -7,6 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 
   <style>
+    /* ══════════════════════════════════════════════
+       RESET & VARIABLES
+    ══════════════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -19,6 +22,7 @@
       --teal:       #0d9488;
       --teal-pale:  #ccfbf1;
       --red:        #dc2626;
+      --red-pale:   #fee2e2;
       --green:      #16a34a;
       --green-pale: #dcfce7;
       --bg:         #f0f4f9;
@@ -28,22 +32,27 @@
       --muted:      #64748b;
       --radius:     10px;
       --shadow:     0 4px 24px rgba(10,35,66,.09);
+      --shadow-sm:  0 2px 8px rgba(10,35,66,.07);
       --font:       'DM Sans', sans-serif;
       --mono:       'IBM Plex Mono', monospace;
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+
     body {
       font-family: var(--font);
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Masthead ── */
+    /* ══════════════════════════════════════════════
+       MASTHEAD
+    ══════════════════════════════════════════════ */
     .masthead {
       background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
-      padding: 0 24px;
+      padding: 0 16px;
       border-bottom: 4px solid var(--accent);
       position: relative; overflow: hidden;
     }
@@ -54,53 +63,66 @@
     }
     .masthead-inner {
       max-width: 980px; margin: 0 auto;
-      display: flex; align-items: center; gap: 18px;
-      padding: 20px 0; position: relative;
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 0; position: relative;
     }
     .gov-emblem {
-      width: 60px; height: 60px;
+      width: 52px; height: 52px; flex-shrink: 0;
       background: rgba(255,255,255,.1); border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      border: 2px solid rgba(255,255,255,.22); flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,.22);
     }
-    .gov-emblem svg { width: 36px; height: 36px; fill: #f0c040; }
-    .masthead-text { flex: 1; }
+    .gov-emblem svg { width: 30px; height: 30px; fill: #f0c040; }
+    .masthead-text { flex: 1; min-width: 0; }
     .masthead-text .dept {
-      font-size: 11px; letter-spacing: .13em; text-transform: uppercase;
-      color: rgba(255,255,255,.55); font-weight: 500; margin-bottom: 4px;
+      font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(255,255,255,.55); font-weight: 500; margin-bottom: 3px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .masthead-text h1 {
-      font-size: clamp(14px, 2.4vw, 19px); font-weight: 700; color: #fff; line-height: 1.25;
+      font-size: clamp(13px, 3.5vw, 19px); font-weight: 700; color: #fff; line-height: 1.25;
     }
     .masthead-text h1 span { color: var(--accent); }
     .masthead-badge {
       background: var(--accent); color: var(--navy);
-      font-size: 10px; font-weight: 700; letter-spacing: .1em;
-      text-transform: uppercase; padding: 4px 10px; border-radius: 4px; white-space: nowrap;
+      font-size: 9px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; padding: 4px 9px; border-radius: 4px;
+      white-space: nowrap; flex-shrink: 0;
     }
+    @media (max-width: 400px) { .masthead-badge { display: none; } }
+
     .strip { height: 4px; background: linear-gradient(90deg,var(--teal),var(--blue),var(--accent)); }
 
-    /* ── Tab Nav ── */
+    /* ══════════════════════════════════════════════
+       TAB NAV — mobile scrollable
+    ══════════════════════════════════════════════ */
     .tab-nav {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      box-shadow: 0 2px 8px rgba(10,35,66,.05);
+      box-shadow: var(--shadow-sm);
       position: sticky; top: 0; z-index: 100;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
+    .tab-nav::-webkit-scrollbar { display: none; }
+
     .tab-nav-inner {
       max-width: 980px; margin: 0 auto;
-      display: flex; padding: 0 16px;
+      display: flex; padding: 0 12px;
+      min-width: max-content;
     }
     .tab-btn {
-      display: flex; align-items: center; gap: 8px;
-      padding: 16px 22px;
-      font-family: var(--font); font-size: 13.5px; font-weight: 600;
+      display: flex; align-items: center; gap: 7px;
+      padding: 14px 18px;
+      font-family: var(--font); font-size: 13px; font-weight: 600;
       color: var(--muted); background: none; border: none;
       border-bottom: 3px solid transparent; cursor: pointer;
       transition: color .2s, border-color .2s;
-      white-space: nowrap;
+      white-space: nowrap; flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
     }
-    .tab-btn .tab-icon { font-size: 16px; }
+    .tab-btn .tab-icon { font-size: 15px; }
     .tab-btn:hover { color: var(--blue); }
     .tab-btn.active { color: var(--navy); border-bottom-color: var(--blue); }
     .tab-badge {
@@ -109,68 +131,92 @@
       padding: 2px 6px; border-radius: 10px; min-width: 18px; text-align: center;
     }
 
-    /* ── Page wrap ── */
-    .page-wrap { max-width: 980px; margin: 0 auto; padding: 28px 16px 60px; }
+    /* ══════════════════════════════════════════════
+       PAGE WRAP
+    ══════════════════════════════════════════════ */
+    .page-wrap { max-width: 980px; margin: 0 auto; padding: 20px 12px 60px; }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* ── Section card ── */
+    /* ══════════════════════════════════════════════
+       SECTION CARDS
+    ══════════════════════════════════════════════ */
     .section-card {
       background: var(--surface); border-radius: var(--radius);
-      box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 24px; overflow: hidden;
+      box-shadow: var(--shadow); border: 1px solid var(--border);
+      margin-bottom: 20px; overflow: hidden;
     }
     .section-head {
-      display: flex; align-items: center; gap: 12px;
-      padding: 18px 24px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      padding: 16px 18px; border-bottom: 1px solid var(--border);
       background: linear-gradient(90deg,#f8fafc,#fff);
     }
     .section-icon {
-      width: 36px; height: 36px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+      width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 17px;
     }
     .icon-blue { background: var(--blue-pale); }
     .icon-teal { background: var(--teal-pale); }
+    .icon-red  { background: var(--red-pale); }
     .section-title { font-size: 14px; font-weight: 600; color: var(--navy); }
     .section-subtitle { font-size: 12px; color: var(--muted); margin-top: 1px; }
-    .section-body { padding: 24px; }
+    .section-body { padding: 18px; }
 
-    /* ── Fields ── */
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    @media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
+    /* ══════════════════════════════════════════════
+       FORM FIELDS — fully mobile-first
+    ══════════════════════════════════════════════ */
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 520px) { .field-row { grid-template-columns: 1fr; gap: 12px; } }
+
     .field-group { display: flex; flex-direction: column; gap: 6px; }
     .field-group label {
-      font-size: 12.5px; font-weight: 600; color: var(--navy);
-      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600; color: var(--navy);
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
     }
     .hint {
-      font-weight: 400; font-size: 11px; color: var(--muted);
+      font-weight: 400; font-size: 10.5px; color: var(--muted);
       background: #f1f5f9; padding: 2px 6px; border-radius: 4px;
     }
+
     input[type="text"], input[type="number"], input[type="tel"],
     input[type="password"], input[type="search"], select {
-      width: 100%; padding: 10px 14px;
-      border: 1.5px solid var(--border); border-radius: 7px;
-      font-family: var(--font); font-size: 14px; color: var(--text);
-      background: #fafcff; transition: border-color .2s, box-shadow .2s, background .2s;
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-family: var(--font); font-size: 15px; color: var(--text);
+      background: #fafcff;
+      transition: border-color .2s, box-shadow .2s, background .2s;
       outline: none; appearance: none;
+      /* Better tap target on mobile */
+      min-height: 44px;
     }
     input:focus, select:focus {
       border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,86,219,.1); background: #fff;
     }
     input::placeholder { color: #adb5c5; }
-    #card-uid, .uid-mono { font-family: var(--mono); letter-spacing: .12em; font-size: 14px; text-transform: uppercase; }
+
+    #card-uid, .uid-mono {
+      font-family: var(--mono); letter-spacing: .12em;
+      font-size: 15px; text-transform: uppercase;
+    }
 
     .select-wrap { position: relative; }
     .select-wrap::after {
-      content: "▾"; position: absolute; right: 12px; top: 50%;
-      transform: translateY(-50%); pointer-events: none; color: var(--muted); font-size: 13px;
+      content: "▾"; position: absolute; right: 13px; top: 50%;
+      transform: translateY(-50%); pointer-events: none;
+      color: var(--muted); font-size: 14px;
     }
-    .select-wrap select { padding-right: 32px; cursor: pointer; }
+    .select-wrap select { padding-right: 34px; cursor: pointer; }
 
     .count-display {
       display: inline-flex; align-items: center; gap: 8px;
       background: var(--blue-pale); color: var(--navy-mid);
-      font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 20px; margin-top: 4px;
+      font-size: 13px; font-weight: 600;
+      padding: 6px 14px; border-radius: 20px; margin-top: 4px;
     }
     #count-badge {
       background: var(--blue); color: #fff;
@@ -178,231 +224,375 @@
       display: inline-flex; align-items: center; justify-content: center; font-size: 13px;
     }
 
-    /* ── Quota chips ── */
-    .quota-preview { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+    /* ══════════════════════════════════════════════
+       QUOTA CHIPS
+    ══════════════════════════════════════════════ */
+    .quota-preview { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
     .quota-chip {
-      display: flex; align-items: center; gap: 8px;
+      display: flex; align-items: center; gap: 7px;
       background: linear-gradient(135deg,#f0fdf4,#dcfce7);
       border: 1px solid #bbf7d0; border-radius: 8px;
-      padding: 8px 16px; font-size: 13px; color: #166534;
+      padding: 8px 14px; font-size: 13px; color: #166534;
     }
     .quota-chip .qval { font-family: var(--mono); font-size: 15px; font-weight: 600; color: #15803d; }
 
-    /* ── Member cards (register form) ── */
+    /* ══════════════════════════════════════════════
+       MEMBER CARDS (register)
+    ══════════════════════════════════════════════ */
     .member-card {
       background: #f8faff; border: 1.5px solid #e2eaf7;
-      border-radius: var(--radius); overflow: hidden; margin-bottom: 16px;
-      opacity: 0; transform: translateY(10px); transition: opacity .3s ease, transform .3s ease;
+      border-radius: var(--radius); overflow: hidden; margin-bottom: 14px;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity .3s ease, transform .3s ease;
     }
     .member-card.animate-in { opacity: 1; transform: translateY(0); }
     .member-header {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 11px 18px;
+      padding: 10px 16px;
       background: linear-gradient(90deg, var(--navy) 0%, var(--navy-mid) 100%);
     }
     .member-index { font-size: 13px; font-weight: 600; color: #fff; }
-    .member-tag { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.5); }
-    .member-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 18px; }
-    @media (max-width: 480px) { .member-grid { grid-template-columns: 1fr; } }
+    .member-tag { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+    .member-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 16px;
+    }
+    @media (max-width: 480px) { .member-grid { grid-template-columns: 1fr; gap: 12px; } }
 
     .auto-badge {
-      font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
-      background: #fef3c7; color: #92400e; border: 1px solid #fde68a; padding: 2px 8px; border-radius: 4px;
+      font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+      background: #fef3c7; color: #92400e; border: 1px solid #fde68a;
+      padding: 2px 8px; border-radius: 4px; margin-left: auto;
     }
 
-    /* ── Submit button ── */
+    /* ══════════════════════════════════════════════
+       BUTTONS — all min 44px tall for mobile
+    ══════════════════════════════════════════════ */
     .submit-wrap { display: flex; justify-content: center; margin-top: 8px; }
     #submit-btn {
       background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
       color: #fff; border: none; border-radius: 9px;
-      padding: 14px 48px; font-family: var(--font); font-size: 15px; font-weight: 600;
+      padding: 14px 32px; font-family: var(--font); font-size: 15px; font-weight: 600;
       cursor: pointer; display: flex; align-items: center; gap: 10px;
       box-shadow: 0 6px 20px rgba(26,86,219,.35);
       transition: transform .15s, box-shadow .15s, opacity .15s;
-      min-width: 260px; justify-content: center;
+      width: 100%; max-width: 340px; justify-content: center;
+      min-height: 52px;
     }
     #submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(26,86,219,.45); }
+    #submit-btn:active:not(:disabled) { transform: translateY(0); }
     #submit-btn:disabled { opacity: .7; cursor: not-allowed; }
-    #submit-btn.loading .btn-label::after {
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin-after::after {
       content: ""; display: inline-block; width: 13px; height: 13px;
       border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
       border-radius: 50%; animation: spin .7s linear infinite; margin-left: 10px; vertical-align: middle;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── View Cards ── */
-    .search-bar-wrap { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-    .search-bar-wrap input { max-width: 320px; }
     .btn-refresh {
       display: flex; align-items: center; gap: 6px;
       background: var(--blue); color: #fff; border: none; border-radius: 7px;
-      padding: 10px 18px; font-family: var(--font); font-size: 13px; font-weight: 600;
-      cursor: pointer; transition: background .2s;
+      padding: 10px 16px; font-family: var(--font); font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: background .2s; min-height: 44px;
+      white-space: nowrap;
     }
     .btn-refresh:hover { background: var(--navy); }
 
-    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+    .btn-load {
+      padding: 11px 22px; background: var(--navy); color: #fff;
+      border: none; border-radius: 7px; font-family: var(--font);
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: background .2s; min-height: 44px; white-space: nowrap;
+    }
+    .btn-load:hover { background: var(--blue); }
+
+    /* ══════════════════════════════════════════════
+       VIEW CARDS — search bar
+    ══════════════════════════════════════════════ */
+    .search-bar-wrap {
+      display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    }
+    .search-bar-wrap input { flex: 1; min-width: 140px; }
+
+    /* ══════════════════════════════════════════════
+       CARDS GRID — responsive
+    ══════════════════════════════════════════════ */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    @media (max-width: 360px) { .cards-grid { grid-template-columns: 1fr; } }
+
     .ration-card-tile {
       background: var(--surface); border: 1.5px solid var(--border);
       border-radius: var(--radius); overflow: hidden;
-      box-shadow: 0 2px 12px rgba(10,35,66,.07);
-      transition: box-shadow .2s, transform .2s; cursor: default;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .2s, transform .2s;
     }
     .ration-card-tile:hover { box-shadow: 0 6px 22px rgba(10,35,66,.14); transform: translateY(-2px); }
+
     .rct-header {
       background: linear-gradient(135deg, var(--navy), var(--navy-mid));
-      padding: 14px 16px; display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px; display: flex; align-items: center; gap: 10px;
     }
-    .rct-uid { font-family: var(--mono); font-size: 15px; font-weight: 500; color: #fff; letter-spacing: .1em; flex: 1; }
-    .rct-body { padding: 14px 16px; }
-    .rct-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .rct-uid { font-family: var(--mono); font-size: 14px; font-weight: 500; color: #fff; letter-spacing: .1em; flex: 1; }
+    .rct-body { padding: 12px 14px; }
+    .rct-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
     .rct-row:last-child { margin-bottom: 0; }
-    .rct-label { font-size: 11.5px; color: var(--muted); font-weight: 500; }
-    .rct-value { font-size: 13px; font-weight: 600; color: var(--navy); }
-    .rct-actions { padding: 0 16px 14px; display: flex; gap: 8px; }
-    .btn-view-detail, .btn-edit-card {
-      flex: 1; padding: 8px 0; border-radius: 6px; border: none;
-      font-family: var(--font); font-size: 12.5px; font-weight: 600; cursor: pointer;
-      transition: background .2s;
+    .rct-label { font-size: 11px; color: var(--muted); font-weight: 500; }
+    .rct-value { font-size: 12.5px; font-weight: 600; color: var(--navy); }
+
+    /* 3 buttons: view / edit / delete */
+    .rct-actions { padding: 0 14px 12px; display: grid; grid-template-columns: 1fr 1fr 44px; gap: 7px; }
+    .btn-view-detail, .btn-edit-card, .btn-delete-card {
+      padding: 9px 0; border-radius: 6px; border: none;
+      font-family: var(--font); font-size: 12px; font-weight: 600; cursor: pointer;
+      transition: background .2s, transform .1s;
+      min-height: 40px; display: flex; align-items: center; justify-content: center;
     }
     .btn-view-detail { background: var(--blue-pale); color: var(--blue); }
     .btn-view-detail:hover { background: #bfdbfe; }
     .btn-edit-card { background: var(--teal-pale); color: var(--teal); }
     .btn-edit-card:hover { background: #99f6e4; }
+    .btn-delete-card { background: var(--red-pale); color: var(--red); font-size: 16px; }
+    .btn-delete-card:hover { background: #fecaca; }
+    .btn-delete-card:active { transform: scale(.92); }
 
-    .state-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
-    .state-empty .state-icon { font-size: 48px; margin-bottom: 12px; }
+    /* ══════════════════════════════════════════════
+       EMPTY / LOADING STATES
+    ══════════════════════════════════════════════ */
+    .state-empty { text-align: center; padding: 50px 20px; color: var(--muted); }
+    .state-empty .state-icon { font-size: 44px; margin-bottom: 12px; }
     .state-empty p { font-size: 14px; }
 
-    /* ── Detail Modal ── */
+    /* ══════════════════════════════════════════════
+       DETAIL MODAL — mobile full-screen on small
+    ══════════════════════════════════════════════ */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(10,35,66,.55);
-      z-index: 500; display: flex; align-items: center; justify-content: center;
-      padding: 20px; opacity: 0; pointer-events: none;
+      z-index: 500; display: flex; align-items: flex-end;
+      padding: 0; opacity: 0; pointer-events: none;
       transition: opacity .25s ease;
     }
-    .modal-overlay.open { opacity: 1; pointer-events: all; }
-    .modal {
-      background: var(--surface); border-radius: 14px;
-      box-shadow: 0 24px 60px rgba(10,35,66,.22);
-      width: 100%; max-width: 680px; max-height: 90vh;
-      overflow-y: auto; transform: translateY(18px) scale(.97);
-      transition: transform .25s ease;
+    @media (min-width: 600px) {
+      .modal-overlay { align-items: center; padding: 20px; }
     }
-    .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--surface);
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 -8px 40px rgba(10,35,66,.2);
+      width: 100%; max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(30px);
+      transition: transform .3s cubic-bezier(.4,0,.2,1);
+    }
+    @media (min-width: 600px) {
+      .modal { border-radius: 14px; max-width: 680px; transform: translateY(18px) scale(.97); }
+      .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    /* drag handle for mobile */
+    .modal-handle {
+      width: 40px; height: 4px; background: #d1dbe8;
+      border-radius: 2px; margin: 10px auto 0;
+    }
+    @media (min-width: 600px) { .modal-handle { display: none; } }
+
     .modal-head {
       position: sticky; top: 0;
       background: linear-gradient(135deg, var(--navy), var(--navy-mid));
-      padding: 18px 22px; display: flex; align-items: center; gap: 12px; z-index: 2;
+      padding: 16px 18px; display: flex; align-items: center; gap: 12px; z-index: 2;
     }
-    .modal-head-title { flex: 1; }
-    .mh-label { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 2px; }
-    .mh-uid { font-family: var(--mono); font-size: 18px; color: #fff; letter-spacing: .1em; }
+    .modal-head-title { flex: 1; min-width: 0; }
+    .mh-label { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 2px; }
+    .mh-uid { font-family: var(--mono); font-size: 16px; color: #fff; letter-spacing: .1em; }
     .modal-close {
       background: rgba(255,255,255,.15); border: none; color: #fff;
-      width: 32px; height: 32px; border-radius: 50%; font-size: 18px;
+      width: 34px; height: 34px; border-radius: 50%; font-size: 18px;
       cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: background .2s;
+      transition: background .2s; flex-shrink: 0;
     }
     .modal-close:hover { background: rgba(255,255,255,.28); }
-    .modal-body { padding: 22px; }
+    .modal-body { padding: 18px; }
 
-    .members-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+    /* ── Members table — horizontal scroll on mobile */
+    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 4px; }
+    .members-table { width: 100%; border-collapse: collapse; min-width: 400px; }
     .members-table th {
-      background: #f1f5f9; font-size: 11.5px; font-weight: 600; letter-spacing: .06em;
-      text-transform: uppercase; color: var(--muted); padding: 10px 12px; text-align: left;
-      border-bottom: 1px solid var(--border);
+      background: #f1f5f9; font-size: 11px; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--muted); padding: 9px 11px; text-align: left;
+      border-bottom: 1px solid var(--border); white-space: nowrap;
     }
-    .members-table td { padding: 11px 12px; font-size: 13.5px; border-bottom: 1px solid #f1f5f9; }
+    .members-table td { padding: 10px 11px; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
     .members-table tr:last-child td { border-bottom: none; }
     .members-table tr:hover td { background: #fafcff; }
     .pwd-cell { font-family: var(--mono); letter-spacing: .1em; }
     .pwd-mask { cursor: pointer; user-select: none; color: var(--blue); }
-    .quota-info-row { display: flex; gap: 16px; flex-wrap: wrap; margin: 16px 0; }
+
+    .quota-info-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
     .qi-chip {
       display: flex; align-items: center; gap: 6px;
       background: var(--green-pale); border: 1px solid #bbf7d0;
-      border-radius: 7px; padding: 8px 14px; font-size: 13px; color: #166534;
+      border-radius: 7px; padding: 7px 12px; font-size: 13px; color: #166534;
     }
     .qi-chip strong { font-family: var(--mono); }
 
-    /* ── Edit Tab ── */
-    .edit-search-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
-    .edit-search-row .field-group { flex: 1; min-width: 200px; }
-    .btn-load {
-      padding: 10px 22px; background: var(--navy); color: #fff;
-      border: none; border-radius: 7px; font-family: var(--font);
-      font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
-      transition: background .2s;
+    /* ══════════════════════════════════════════════
+       CONFIRM MODAL (delete)
+    ══════════════════════════════════════════════ */
+    .confirm-overlay {
+      position: fixed; inset: 0; background: rgba(10,35,66,.6);
+      z-index: 600; display: flex; align-items: center; justify-content: center;
+      padding: 20px; opacity: 0; pointer-events: none;
+      transition: opacity .2s ease;
     }
-    .btn-load:hover { background: var(--blue); }
-    .btn-load.loading-spin::after {
-      content: ""; display: inline-block; width: 12px; height: 12px;
-      border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
-      border-radius: 50%; animation: spin .7s linear infinite; margin-left: 8px; vertical-align: middle;
+    .confirm-overlay.open { opacity: 1; pointer-events: all; }
+    .confirm-box {
+      background: var(--surface); border-radius: 14px;
+      box-shadow: 0 16px 48px rgba(10,35,66,.22);
+      width: 100%; max-width: 380px;
+      padding: 28px 24px;
+      transform: scale(.94);
+      transition: transform .2s ease;
+      text-align: center;
     }
-
-    #edit-form-wrap { display: none; }
-    .edit-member-card {
-      background: #f4fffe; border: 1.5px solid #b2f0e8;
-      border-radius: var(--radius); overflow: hidden; margin-bottom: 16px;
+    .confirm-overlay.open .confirm-box { transform: scale(1); }
+    .confirm-icon { font-size: 44px; margin-bottom: 12px; }
+    .confirm-title { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .confirm-uid-display {
+      display: inline-block;
+      font-family: var(--mono); font-size: 14px; letter-spacing: .12em;
+      background: var(--red-pale); color: var(--red);
+      padding: 4px 12px; border-radius: 6px; margin-bottom: 14px;
     }
-    .edit-member-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 11px 18px;
-      background: linear-gradient(90deg, var(--teal) 0%, #0f766e 100%);
+    .confirm-msg { font-size: 13.5px; color: var(--muted); margin-bottom: 22px; line-height: 1.5; }
+    .confirm-actions { display: flex; gap: 10px; }
+    .btn-confirm-cancel {
+      flex: 1; padding: 12px; background: #f1f5f9; color: var(--muted);
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: background .2s; min-height: 48px;
     }
-    .edit-member-label { font-size: 13px; font-weight: 600; color: #fff; }
-    .edit-member-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 18px; }
-    @media (max-width: 480px) { .edit-member-grid { grid-template-columns: 1fr; } }
-
-    .edit-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
-    .btn-save-edit {
-      background: linear-gradient(135deg, var(--teal), #0f766e);
-      color: #fff; border: none; border-radius: 9px;
-      padding: 13px 44px; font-family: var(--font); font-size: 15px; font-weight: 600;
-      cursor: pointer; display: flex; align-items: center; gap: 8px;
-      box-shadow: 0 6px 20px rgba(13,148,136,.35);
-      transition: transform .15s, box-shadow .15s, opacity .15s; min-width: 220px; justify-content: center;
+    .btn-confirm-cancel:hover { background: #e2e8f0; }
+    .btn-confirm-delete {
+      flex: 1; padding: 12px; background: var(--red); color: #fff;
+      border: none; border-radius: 8px;
+      font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer;
+      box-shadow: 0 4px 14px rgba(220,38,38,.35);
+      transition: background .2s, transform .1s; min-height: 48px;
     }
-    .btn-save-edit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(13,148,136,.45); }
-    .btn-save-edit:disabled { opacity: .7; cursor: not-allowed; }
-    .btn-save-edit.loading .se-label::after {
+    .btn-confirm-delete:hover { background: #b91c1c; }
+    .btn-confirm-delete:active { transform: scale(.96); }
+    .btn-confirm-delete.loading::after {
       content: ""; display: inline-block; width: 13px; height: 13px;
       border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
       border-radius: 50%; animation: spin .7s linear infinite; margin-left: 8px; vertical-align: middle;
     }
+
+    /* ══════════════════════════════════════════════
+       DELETE CARD TAB
+    ══════════════════════════════════════════════ */
+    .delete-search-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+    .delete-search-row .field-group { flex: 1; min-width: 160px; }
+
+    .card-preview-box {
+      display: none;
+      background: #fff8f8; border: 1.5px solid #fecaca;
+      border-radius: var(--radius); overflow: hidden; margin-top: 6px;
+    }
+    .cpb-header {
+      background: linear-gradient(90deg, var(--red), #b91c1c);
+      padding: 10px 16px; display: flex; align-items: center; gap: 10px;
+    }
+    .cpb-uid { font-family: var(--mono); font-size: 14px; color: #fff; letter-spacing: .1em; flex: 1; }
+    .cpb-body { padding: 14px 16px; }
+    .cpb-row { display: flex; justify-content: space-between; margin-bottom: 7px; font-size: 13px; }
+    .cpb-row:last-child { margin-bottom: 0; }
+    .cpb-label { color: var(--muted); }
+    .cpb-value { font-weight: 600; color: var(--navy); }
+    .btn-do-delete {
+      width: 100%; margin-top: 14px; padding: 14px;
+      background: var(--red); color: #fff; border: none; border-radius: 8px;
+      font-family: var(--font); font-size: 15px; font-weight: 600; cursor: pointer;
+      box-shadow: 0 4px 14px rgba(220,38,38,.3);
+      transition: background .2s, transform .1s; min-height: 50px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-do-delete:hover { background: #b91c1c; }
+    .btn-do-delete:active { transform: scale(.98); }
+
+    /* ══════════════════════════════════════════════
+       EDIT TAB
+    ══════════════════════════════════════════════ */
+    .edit-search-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+    .edit-search-row .field-group { flex: 1; min-width: 160px; }
+
+    #edit-form-wrap { display: none; }
+    .edit-member-card {
+      background: #f4fffe; border: 1.5px solid #b2f0e8;
+      border-radius: var(--radius); overflow: hidden; margin-bottom: 14px;
+    }
+    .edit-member-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px;
+      background: linear-gradient(90deg, var(--teal) 0%, #0f766e 100%);
+    }
+    .edit-member-label { font-size: 13px; font-weight: 600; color: #fff; }
+    .edit-member-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 16px;
+    }
+    @media (max-width: 480px) { .edit-member-grid { grid-template-columns: 1fr; gap: 12px; } }
+
+    .edit-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+    .btn-save-edit {
+      background: linear-gradient(135deg, var(--teal), #0f766e);
+      color: #fff; border: none; border-radius: 9px;
+      padding: 13px 32px; font-family: var(--font); font-size: 15px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 6px 20px rgba(13,148,136,.35);
+      transition: transform .15s, box-shadow .15s, opacity .15s;
+      flex: 1; max-width: 260px; justify-content: center; min-height: 50px;
+    }
+    .btn-save-edit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(13,148,136,.45); }
+    .btn-save-edit:disabled { opacity: .7; cursor: not-allowed; }
     .btn-cancel-edit {
       background: #f1f5f9; color: var(--muted); border: 1.5px solid var(--border);
-      border-radius: 9px; padding: 13px 30px; font-family: var(--font); font-size: 14px;
-      font-weight: 600; cursor: pointer; transition: background .2s;
+      border-radius: 9px; padding: 13px 24px; font-family: var(--font); font-size: 14px;
+      font-weight: 600; cursor: pointer; transition: background .2s; min-height: 50px;
     }
     .btn-cancel-edit:hover { background: #e2e8f0; }
 
-    /* ── Toast ── */
+    /* ══════════════════════════════════════════════
+       TOAST NOTIFICATIONS
+    ══════════════════════════════════════════════ */
     .toast {
-      position: fixed; bottom: 28px; left: 50%;
+      position: fixed; bottom: 20px; left: 50%;
       transform: translateX(-50%) translateY(16px); opacity: 0;
       display: flex; align-items: center; gap: 10px;
-      padding: 13px 22px; border-radius: 10px;
+      padding: 13px 20px; border-radius: 10px;
       font-size: 14px; font-weight: 500;
       box-shadow: 0 8px 32px rgba(0,0,0,.18);
       transition: opacity .3s ease, transform .3s ease;
-      z-index: 9999; max-width: 90vw;
+      z-index: 9999; max-width: calc(100vw - 32px);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .toast-success { background: #15803d; color: #fff; }
     .toast-error   { background: #dc2626; color: #fff; }
 
     footer {
-      text-align: center; padding: 20px;
-      font-size: 11.5px; color: var(--muted); letter-spacing: .04em;
+      text-align: center; padding: 20px 16px;
+      font-size: 11px; color: var(--muted); letter-spacing: .04em;
     }
   </style>
 </head>
 <body>
 
-<!-- ── Masthead ────────────────────────────────────────────────────────── -->
+<!-- ── MASTHEAD ─────────────────────────────────────────────────────── -->
 <header class="masthead">
   <div class="masthead-inner">
     <div class="gov-emblem">
@@ -414,33 +604,36 @@
       </svg>
     </div>
     <div class="masthead-text">
-      <div class="dept">Government of Andhra Pradesh · Civil Supplies Department</div>
-      <h1>AP PDS: <span>Ration Card Admin Portal</span></h1>
+      <div class="dept">Government of Andhra Pradesh · Civil Supplies</div>
+      <h1>AP PDS: <span>Ration Card Portal</span></h1>
     </div>
-    <span class="masthead-badge">Admin Portal</span>
+    <span class="masthead-badge">Admin</span>
   </div>
 </header>
 <div class="strip"></div>
 
-<!-- ── Tab Nav ─────────────────────────────────────────────────────────── -->
+<!-- ── TAB NAV ──────────────────────────────────────────────────────── -->
 <nav class="tab-nav">
   <div class="tab-nav-inner">
     <button class="tab-btn active" data-tab="register">
-      <span class="tab-icon">📋</span> Register Card
+      <span class="tab-icon">📋</span> Register
     </button>
     <button class="tab-btn" data-tab="view">
       <span class="tab-icon">🗂️</span> View Cards
       <span class="tab-badge" id="cards-count-badge">0</span>
     </button>
     <button class="tab-btn" data-tab="edit">
-      <span class="tab-icon">✏️</span> Edit Card
+      <span class="tab-icon">✏️</span> Edit
+    </button>
+    <button class="tab-btn" data-tab="delete">
+      <span class="tab-icon">🗑️</span> Delete
     </button>
   </div>
 </nav>
 
 <div class="page-wrap">
 
-  <!-- ════════════ TAB: REGISTER ════════════ -->
+  <!-- ══════════ TAB: REGISTER ══════════ -->
   <div id="tab-register" class="tab-panel active">
     <form id="registration-form" novalidate>
 
@@ -455,7 +648,7 @@
         <div class="section-body">
           <div class="field-row">
             <div class="field-group">
-              <label for="card-uid">Card UID <span class="hint">8 characters</span></label>
+              <label for="card-uid">Card UID <span class="hint">8 chars</span></label>
               <input type="text" id="card-uid" placeholder="e.g. A3F9C201"
                      maxlength="8" minlength="8" autocomplete="off" required/>
             </div>
@@ -463,11 +656,16 @@
               <label for="member-count">Total Family Members</label>
               <div class="select-wrap">
                 <select id="member-count" required>
-                  <option value="1">1 Member</option><option value="2">2 Members</option>
-                  <option value="3">3 Members</option><option value="4">4 Members</option>
-                  <option value="5">5 Members</option><option value="6">6 Members</option>
-                  <option value="7">7 Members</option><option value="8">8 Members</option>
-                  <option value="9">9 Members</option><option value="10">10 Members</option>
+                  <option value="1">1 Member</option>
+                  <option value="2">2 Members</option>
+                  <option value="3">3 Members</option>
+                  <option value="4">4 Members</option>
+                  <option value="5">5 Members</option>
+                  <option value="6">6 Members</option>
+                  <option value="7">7 Members</option>
+                  <option value="8">8 Members</option>
+                  <option value="9">9 Members</option>
+                  <option value="10">10 Members</option>
                 </select>
               </div>
               <div class="count-display">Members: <span id="count-badge">1</span></div>
@@ -483,14 +681,16 @@
             <div class="section-title">Monthly Ration Quota</div>
             <div class="section-subtitle">Auto-calculated based on member count</div>
           </div>
-          <span class="auto-badge" style="margin-left:auto">Auto</span>
+          <span class="auto-badge">Auto</span>
         </div>
         <div class="section-body">
           <div class="quota-preview">
             <div class="quota-chip">🍚 Rice: <span class="qval">5</span> kg/person</div>
-            <div class="quota-chip">🍬 Sugar: <span class="qval" id="sugar-val">1</span> packet(s) total</div>
+            <div class="quota-chip">🍬 Sugar: <span class="qval" id="sugar-val">1</span> pkt(s)</div>
           </div>
-          <p style="margin-top:10px;font-size:12px;color:var(--muted);">Rice fixed at 5 kg/person. Sugar packets = total family members.</p>
+          <p style="margin-top:10px;font-size:12px;color:var(--muted);">
+            Rice fixed at 5 kg/person · Sugar packets = total family members.
+          </p>
         </div>
       </div>
 
@@ -499,10 +699,10 @@
           <div class="section-icon icon-blue">👨‍👩‍👧</div>
           <div>
             <div class="section-title">Beneficiary Details</div>
-            <div class="section-subtitle">Individual details for each family member</div>
+            <div class="section-subtitle">Fill details for each family member</div>
           </div>
         </div>
-        <div class="section-body" style="padding-bottom:8px;">
+        <div class="section-body" style="padding-bottom:6px;">
           <div id="member-forms"></div>
         </div>
       </div>
@@ -515,47 +715,47 @@
     </form>
   </div>
 
-  <!-- ════════════ TAB: VIEW ════════════ -->
+  <!-- ══════════ TAB: VIEW ══════════ -->
   <div id="tab-view" class="tab-panel">
     <div class="section-card">
       <div class="section-head">
         <div class="section-icon icon-blue">🔍</div>
         <div>
           <div class="section-title">Search &amp; Filter</div>
-          <div class="section-subtitle">Find ration cards by UID</div>
+          <div class="section-subtitle">Find cards by UID</div>
         </div>
-        <div style="margin-left:auto">
+        <div style="margin-left:auto; flex-shrink:0">
           <button class="btn-refresh" id="btn-refresh">⟳ Refresh</button>
         </div>
       </div>
       <div class="section-body">
         <div class="search-bar-wrap">
-          <input type="search" id="search-uid" placeholder="Search by Card UID…" style="max-width:320px"/>
+          <input type="search" id="search-uid" placeholder="Search Card UID…"/>
         </div>
       </div>
     </div>
     <div id="cards-list-wrap">
       <div class="state-empty">
         <div class="state-icon">📭</div>
-        <p>Click <strong>Refresh</strong> to load registered ration cards.</p>
+        <p>Tap <strong>Refresh</strong> to load registered ration cards.</p>
       </div>
     </div>
   </div>
 
-  <!-- ════════════ TAB: EDIT ════════════ -->
+  <!-- ══════════ TAB: EDIT ══════════ -->
   <div id="tab-edit" class="tab-panel">
     <div class="section-card">
       <div class="section-head">
         <div class="section-icon icon-teal">🔎</div>
         <div>
           <div class="section-title">Load Card for Editing</div>
-          <div class="section-subtitle">Enter the Card UID to fetch and edit its data</div>
+          <div class="section-subtitle">Enter Card UID to fetch &amp; edit</div>
         </div>
       </div>
       <div class="section-body">
         <div class="edit-search-row">
           <div class="field-group">
-            <label for="edit-uid-input">Card UID <span class="hint">8 characters</span></label>
+            <label for="edit-uid-input">Card UID <span class="hint">8 chars</span></label>
             <input type="text" id="edit-uid-input" class="uid-mono" placeholder="e.g. A3F9C201" maxlength="8"/>
           </div>
           <button type="button" class="btn-load" id="btn-load-card">Load Card</button>
@@ -565,11 +765,68 @@
     <div id="edit-form-wrap"></div>
   </div>
 
+  <!-- ══════════ TAB: DELETE ══════════ -->
+  <div id="tab-delete" class="tab-panel">
+    <div class="section-card">
+      <div class="section-head">
+        <div class="section-icon icon-red">🗑️</div>
+        <div>
+          <div class="section-title">Delete Ration Card</div>
+          <div class="section-subtitle">Permanently remove a card from the database</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="delete-search-row">
+          <div class="field-group">
+            <label for="delete-uid-input">Card UID <span class="hint">8 chars</span></label>
+            <input type="text" id="delete-uid-input" class="uid-mono" placeholder="e.g. A3F9C201" maxlength="8"/>
+          </div>
+          <button type="button" class="btn-load" id="btn-find-card"
+                  style="background:var(--red)" >Find Card</button>
+        </div>
+
+        <div class="card-preview-box" id="delete-preview-box">
+          <div class="cpb-header">
+            <span style="font-size:18px">🪪</span>
+            <span class="cpb-uid" id="cpb-uid">—</span>
+          </div>
+          <div class="cpb-body">
+            <div class="cpb-row"><span class="cpb-label">Family Members</span><span class="cpb-value" id="cpb-members">—</span></div>
+            <div class="cpb-row"><span class="cpb-label">Rice Quota</span><span class="cpb-value" id="cpb-rice">—</span></div>
+            <div class="cpb-row"><span class="cpb-label">Sugar Packets</span><span class="cpb-value" id="cpb-sugar">—</span></div>
+            <div class="cpb-row"><span class="cpb-label">Member Names</span><span class="cpb-value" id="cpb-names" style="text-align:right;max-width:65%">—</span></div>
+          </div>
+          <div style="padding:0 16px 16px">
+            <button type="button" class="btn-do-delete" id="btn-do-delete">
+              🗑️ Permanently Delete This Card
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Warning banner -->
+    <div class="section-card" style="border-color:#fecaca;background:#fff8f8;">
+      <div class="section-body" style="padding:16px 18px;">
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <span style="font-size:22px;flex-shrink:0">⚠️</span>
+          <div>
+            <div style="font-size:13.5px;font-weight:700;color:var(--red);margin-bottom:4px;">Irreversible Action</div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.6;">
+              Deleting a ration card permanently removes all member data, quota assignments, and dispensing history for that card from Firebase. This action <strong>cannot be undone</strong>. Ensure you have the correct Card UID before proceeding.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /page-wrap -->
 
-<!-- ── Detail Modal ────────────────────────────────────────────────────── -->
+<!-- ── DETAIL MODAL ──────────────────────────────────────────────────── -->
 <div class="modal-overlay" id="detail-modal">
   <div class="modal">
+    <div class="modal-handle"></div>
     <div class="modal-head">
       <div class="modal-head-title">
         <div class="mh-label">Ration Card · Full Details</div>
@@ -581,14 +838,29 @@
   </div>
 </div>
 
-<footer>AP PDS · Automatic Ration Dispenser System · Admin Portal &nbsp;|&nbsp; Data secured on Firebase RTDB</footer>
+<!-- ── CONFIRM DELETE MODAL ───────────────────────────────────────────── -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">🗑️</div>
+    <div class="confirm-title">Delete Ration Card?</div>
+    <div class="confirm-uid-display" id="confirm-uid-text">—</div>
+    <div class="confirm-msg">
+      This will permanently erase all data for this card including member info and ration quota. This cannot be undone.
+    </div>
+    <div class="confirm-actions">
+      <button class="btn-confirm-cancel" id="confirm-cancel-btn">Cancel</button>
+      <button class="btn-confirm-delete" id="confirm-delete-btn">🗑️ Delete</button>
+    </div>
+  </div>
+</div>
 
-<!-- ── Firebase + App Logic ─────────────────────────────────────────────── -->
+<footer>AP PDS · Automatic Ration Dispenser System · Admin Portal &nbsp;|&nbsp; Secured on Firebase RTDB</footer>
+
+<!-- ── FIREBASE + APP LOGIC ──────────────────────────────────────────── -->
 <script type="module">
-  // ═══════════════════════════════════════════════════════════════════════════
-  // STEP 1 ▸ Paste your Firebase config here
-  // Firebase Console → Project Settings → Your Apps → SDK setup & config
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ═══════════════════════════════════════════════════════
+  // FIREBASE CONFIG — paste yours here
+  // ═══════════════════════════════════════════════════════
   const firebaseConfig = {
     apiKey: "AIzaSyBD9I0SpHlw4HmXsZ2mgMHs_QGXN5S2Zhg",
     authDomain: "smart-ration-system-2a546.firebaseapp.com",
@@ -596,19 +868,18 @@
     projectId: "smart-ration-system-2a546",
     storageBucket: "smart-ration-system-2a546.firebasestorage.app",
     messagingSenderId: "491925808591",
-    appId: "1:491925808591:web:ee8234a2666f8e36655eba",
-    measurementId: "G-R9VYS2JY5R"
+    appId: "1:491925808591:web:ee8234a2666f8e36655eba"
   };
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ═══════════════════════════════════════════════════════
 
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, set, get, child }
+  import { initializeApp }    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, set, get, remove }
     from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
 
-  // ─── Utilities ──────────────────────────────────────────────────────────────
+  /* ─── TOAST ─────────────────────────────────────────────────────────── */
   function showToast(msg, type = "success") {
     const t = document.createElement("div");
     t.className = `toast toast-${type}`;
@@ -618,18 +889,25 @@
     setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 400); }, 4500);
   }
 
+  /* ─── TAB SWITCHING ─────────────────────────────────────────────────── */
   function switchTab(name) {
     document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === name));
     document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.id === `tab-${name}`));
     if (name === "view") loadAllCards();
   }
-
   document.querySelectorAll(".tab-btn").forEach(btn =>
     btn.addEventListener("click", () => switchTab(btn.dataset.tab)));
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // REGISTER TAB
-  // ════════════════════════════════════════════════════════════════════════════
+  /* ─── HTML ESCAPE ───────────────────────────────────────────────────── */
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g,"&amp;").replace(/"/g,"&quot;")
+      .replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════
+     REGISTER TAB
+  ══════════════════════════════════════════════════════════════════════ */
   const memberContainer = document.getElementById("member-forms");
   const memberCountSel  = document.getElementById("member-count");
   const countBadge      = document.getElementById("count-badge");
@@ -666,7 +944,10 @@
           </div>
         </div>`;
       memberContainer.appendChild(card);
-      requestAnimationFrame(() => { card.style.animationDelay = `${i * 50}ms`; card.classList.add("animate-in"); });
+      requestAnimationFrame(() => {
+        card.style.animationDelay = `${i * 50}ms`;
+        card.classList.add("animate-in");
+      });
     }
   }
 
@@ -681,23 +962,23 @@
   document.getElementById("registration-form").addEventListener("submit", async e => {
     e.preventDefault();
     const btn = document.getElementById("submit-btn");
-    btn.classList.add("loading"); btn.disabled = true;
+    btn.querySelector(".btn-label").classList.add("spin-after");
+    btn.disabled = true;
     try {
       const uid = document.getElementById("card-uid").value.trim().toUpperCase();
       if (uid.length !== 8) throw new Error("Card UID must be exactly 8 characters.");
       const total = parseInt(memberCountSel.value, 10);
       const members = {};
       for (let i = 0; i < total; i++) {
-        members[i] = {
-          name:     document.getElementById(`name_${i}`).value.trim(),
-          age:      document.getElementById(`age_${i}`).value.trim(),
-          phone:    document.getElementById(`phone_${i}`).value.trim(),
-          password: document.getElementById(`password_${i}`).value.trim()
-        };
+        const name     = document.getElementById(`name_${i}`).value.trim();
+        const age      = document.getElementById(`age_${i}`).value.trim();
+        const phone    = document.getElementById(`phone_${i}`).value.trim();
+        const password = document.getElementById(`password_${i}`).value.trim();
+        if (!name || !age || !phone || !password) throw new Error(`Fill all fields for Member ${i+1}.`);
+        members[i] = { name, age, phone, password };
       }
       const payload = {
-        total_members: total,
-        members,
+        total_members: total, members,
         monthly_quota: { rice_kg_per_person: 5, sugar_pkts_total: total }
       };
       await set(ref(db, `ration_cards/${uid}`), payload);
@@ -707,21 +988,21 @@
       buildMemberForms(1);
       updateCardsBadge();
     } catch (err) {
-      console.error("Firebase write error:", err);
-      showToast(err.message, "error");
+      console.error(err); showToast(err.message, "error");
     } finally {
-      btn.classList.remove("loading"); btn.disabled = false;
+      btn.querySelector(".btn-label").classList.remove("spin-after");
+      btn.disabled = false;
     }
   });
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // VIEW CARDS TAB
-  // ════════════════════════════════════════════════════════════════════════════
+  /* ══════════════════════════════════════════════════════════════════════
+     VIEW CARDS TAB
+  ══════════════════════════════════════════════════════════════════════ */
   let allCardsCache = {};
 
   async function loadAllCards() {
     const wrap = document.getElementById("cards-list-wrap");
-    wrap.innerHTML = `<div class="state-empty"><div class="state-icon">⏳</div><p>Loading ration cards…</p></div>`;
+    wrap.innerHTML = `<div class="state-empty"><div class="state-icon">⏳</div><p>Loading cards…</p></div>`;
     try {
       const snap = await get(ref(db, "ration_cards"));
       if (!snap.exists()) {
@@ -758,21 +1039,25 @@
         </div>
         <div class="rct-body">
           <div class="rct-row"><span class="rct-label">Family Members</span><span class="rct-value">${c.total_members}</span></div>
-          <div class="rct-row"><span class="rct-label">Rice Quota</span><span class="rct-value">${(c.monthly_quota?.rice_kg_per_person||5)*c.total_members} kg/month</span></div>
+          <div class="rct-row"><span class="rct-label">Rice Quota</span><span class="rct-value">${(c.monthly_quota?.rice_kg_per_person||5)*c.total_members} kg/mo</span></div>
           <div class="rct-row"><span class="rct-label">Sugar Packets</span><span class="rct-value">${c.monthly_quota?.sugar_pkts_total ?? c.total_members}</span></div>
         </div>
         <div class="rct-actions">
-          <button class="btn-view-detail" data-uid="${uid}">👁 View Details</button>
-          <button class="btn-edit-card" data-uid="${uid}">✏️ Edit</button>
+          <button class="btn-view-detail" data-uid="${uid}">👁 View</button>
+          <button class="btn-edit-card"   data-uid="${uid}">✏️ Edit</button>
+          <button class="btn-delete-card" data-uid="${uid}" title="Delete card">🗑️</button>
         </div>`;
       grid.appendChild(tile);
     });
     wrap.innerHTML = "";
     wrap.appendChild(grid);
+
     wrap.querySelectorAll(".btn-view-detail").forEach(btn =>
       btn.addEventListener("click", () => openDetailModal(btn.dataset.uid, allCardsCache[btn.dataset.uid])));
     wrap.querySelectorAll(".btn-edit-card").forEach(btn =>
       btn.addEventListener("click", () => jumpToEdit(btn.dataset.uid)));
+    wrap.querySelectorAll(".btn-delete-card").forEach(btn =>
+      btn.addEventListener("click", () => openConfirmDelete(btn.dataset.uid)));
   }
 
   document.getElementById("btn-refresh").addEventListener("click", loadAllCards);
@@ -795,35 +1080,37 @@
   }
   updateCardsBadge();
 
-  // ─── Detail Modal ────────────────────────────────────────────────────────────
+  /* ─── Detail Modal ───────────────────────────────────────────────────── */
   function openDetailModal(uid, card) {
     document.getElementById("modal-uid").textContent = uid;
     const body = document.getElementById("modal-body");
     const members = card.members || {};
     let rows = "";
-    Object.keys(members).sort((a,b)=>a-b).forEach(i => {
+    Object.keys(members).sort((a,b)=>+a-+b).forEach(i => {
       const m = members[i];
       rows += `<tr>
-        <td>${parseInt(i)+1}</td>
-        <td>${m.name}</td>
-        <td>${m.age}</td>
-        <td>${m.phone}</td>
+        <td>${+i+1}</td>
+        <td>${escHtml(m.name)}</td>
+        <td>${escHtml(m.age)}</td>
+        <td>${escHtml(m.phone)}</td>
         <td class="pwd-cell">
-          <span class="pwd-mask" data-pwd="${m.password}" data-showing="0" title="Click to reveal">••••</span>
+          <span class="pwd-mask" data-pwd="${escHtml(m.password)}" data-showing="0" title="Tap to reveal">••••</span>
         </td>
       </tr>`;
     });
     body.innerHTML = `
       <div class="quota-info-row">
-        <div class="qi-chip">🍚 Rice: <strong>${(card.monthly_quota?.rice_kg_per_person||5)*card.total_members} kg</strong>/month</div>
+        <div class="qi-chip">🍚 Rice: <strong>${(card.monthly_quota?.rice_kg_per_person||5)*card.total_members} kg</strong>/mo</div>
         <div class="qi-chip">🍬 Sugar: <strong>${card.monthly_quota?.sugar_pkts_total ?? card.total_members}</strong> pkt(s)</div>
-        <div class="qi-chip">👥 Members: <strong>${card.total_members}</strong></div>
+        <div class="qi-chip">👥 <strong>${card.total_members}</strong> members</div>
       </div>
-      <table class="members-table">
-        <thead><tr><th>#</th><th>Name</th><th>Age</th><th>Phone</th><th>Password</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-      <p style="margin-top:12px;font-size:11.5px;color:var(--muted);">💡 Click •••• to reveal/hide a password.</p>`;
+      <div class="table-scroll">
+        <table class="members-table">
+          <thead><tr><th>#</th><th>Name</th><th>Age</th><th>Phone</th><th>Password</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <p style="margin-top:12px;font-size:11.5px;color:var(--muted);">💡 Tap •••• to reveal/hide a password.</p>`;
     body.querySelectorAll(".pwd-mask").forEach(span => {
       span.addEventListener("click", () => {
         const on = span.dataset.showing === "1";
@@ -832,17 +1119,62 @@
       });
     });
     document.getElementById("detail-modal").classList.add("open");
+    document.body.style.overflow = "hidden";
   }
 
-  document.getElementById("modal-close-btn").addEventListener("click", () =>
-    document.getElementById("detail-modal").classList.remove("open"));
+  function closeDetailModal() {
+    document.getElementById("detail-modal").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+  document.getElementById("modal-close-btn").addEventListener("click", closeDetailModal);
   document.getElementById("detail-modal").addEventListener("click", e => {
-    if (e.target === e.currentTarget) e.currentTarget.classList.remove("open");
+    if (e.target === e.currentTarget) closeDetailModal();
   });
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // EDIT TAB
-  // ════════════════════════════════════════════════════════════════════════════
+  /* ══════════════════════════════════════════════════════════════════════
+     CONFIRM DELETE MODAL (from View Cards trash icon)
+  ══════════════════════════════════════════════════════════════════════ */
+  let pendingDeleteUID = null;
+
+  function openConfirmDelete(uid) {
+    pendingDeleteUID = uid;
+    document.getElementById("confirm-uid-text").textContent = uid;
+    document.getElementById("confirm-overlay").classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function closeConfirmDelete() {
+    document.getElementById("confirm-overlay").classList.remove("open");
+    document.body.style.overflow = "";
+    pendingDeleteUID = null;
+  }
+
+  document.getElementById("confirm-cancel-btn").addEventListener("click", closeConfirmDelete);
+  document.getElementById("confirm-overlay").addEventListener("click", e => {
+    if (e.target === e.currentTarget) closeConfirmDelete();
+  });
+
+  document.getElementById("confirm-delete-btn").addEventListener("click", async () => {
+    if (!pendingDeleteUID) return;
+    const uid = pendingDeleteUID;
+    const btn = document.getElementById("confirm-delete-btn");
+    btn.classList.add("loading"); btn.disabled = true;
+    try {
+      await remove(ref(db, `ration_cards/${uid}`));
+      delete allCardsCache[uid];
+      showToast(`Card ${uid} deleted.`, "success");
+      closeConfirmDelete();
+      renderCardsGrid(allCardsCache);
+      updateCardsBadge(Object.keys(allCardsCache).length);
+    } catch (err) {
+      console.error(err); showToast(err.message, "error");
+    } finally {
+      btn.classList.remove("loading"); btn.disabled = false;
+    }
+  });
+
+  /* ══════════════════════════════════════════════════════════════════════
+     EDIT TAB
+  ══════════════════════════════════════════════════════════════════════ */
   function jumpToEdit(uid) {
     switchTab("edit");
     document.getElementById("edit-uid-input").value = uid;
@@ -854,27 +1186,25 @@
     if (uid.length !== 8) { showToast("Enter a valid 8-character Card UID", "error"); return; }
     loadCardForEdit(uid);
   });
-
-  // Also allow pressing Enter in the UID field
   document.getElementById("edit-uid-input").addEventListener("keydown", e => {
     if (e.key === "Enter") document.getElementById("btn-load-card").click();
   });
 
   async function loadCardForEdit(uid) {
-    const btn = document.getElementById("btn-load-card");
+    const btn  = document.getElementById("btn-load-card");
     const wrap = document.getElementById("edit-form-wrap");
-    btn.classList.add("loading-spin"); btn.disabled = true;
+    btn.classList.add("spin-after"); btn.disabled = true;
     wrap.style.display = "none"; wrap.innerHTML = "";
     try {
       const snap = await get(ref(db, `ration_cards/${uid}`));
-      if (!snap.exists()) throw new Error(`Card UID "${uid}" not found.`);
+      if (!snap.exists()) throw new Error(`Card "${uid}" not found.`);
       buildEditForm(uid, snap.val());
       wrap.style.display = "block";
-      setTimeout(() => wrap.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+      setTimeout(() => wrap.scrollIntoView({ behavior:"smooth", block:"start" }), 80);
     } catch (err) {
       console.error(err); showToast(err.message, "error");
     } finally {
-      btn.classList.remove("loading-spin"); btn.disabled = false;
+      btn.classList.remove("spin-after"); btn.disabled = false;
     }
   }
 
@@ -882,7 +1212,6 @@
     const wrap = document.getElementById("edit-form-wrap");
     const total = card.total_members;
     const members = card.members || {};
-
     let memberCards = "";
     for (let i = 0; i < total; i++) {
       const m = members[i] || {};
@@ -916,26 +1245,19 @@
           </div>
         </div>`;
     }
-
     wrap.innerHTML = `
       <div class="section-card">
         <div class="section-head">
           <div class="section-icon icon-teal">✏️</div>
           <div>
-            <div class="section-title">
-              Editing: <span style="font-family:var(--mono);color:var(--blue)">${uid}</span>
-            </div>
-            <div class="section-subtitle">${total} member(s) · ${5*total} kg rice · ${total} sugar pkt(s)/month</div>
+            <div class="section-title">Editing: <span style="font-family:var(--mono);color:var(--blue)">${uid}</span></div>
+            <div class="section-subtitle">${total} member(s) · ${5*total} kg rice · ${total} sugar pkt(s)</div>
           </div>
         </div>
-        <div class="section-body" style="padding-bottom:8px;">
-          ${memberCards}
-        </div>
+        <div class="section-body" style="padding-bottom:6px;">${memberCards}</div>
       </div>
       <div class="edit-actions">
-        <button type="button" class="btn-save-edit" id="btn-save-edit">
-          💾 <span class="se-label">Save Changes</span>
-        </button>
+        <button type="button" class="btn-save-edit" id="btn-save-edit">💾 <span class="se-label">Save Changes</span></button>
         <button type="button" class="btn-cancel-edit" id="btn-cancel-edit">Cancel</button>
       </div>`;
 
@@ -948,7 +1270,8 @@
 
   async function saveEditedCard(uid, total) {
     const btn = document.getElementById("btn-save-edit");
-    btn.classList.add("loading"); btn.disabled = true;
+    btn.querySelector(".se-label").classList.add("spin-after");
+    btn.disabled = true;
     try {
       const members = {};
       for (let i = 0; i < total; i++) {
@@ -959,7 +1282,7 @@
         if (!name || !age || !phone || !password)
           throw new Error(`Fill all fields for Member ${i+1}.`);
         if (!/^\d{10}$/.test(phone))
-          throw new Error(`Phone for Member ${i+1} must be exactly 10 digits.`);
+          throw new Error(`Phone for Member ${i+1} must be 10 digits.`);
         if (!/^\d{4,6}$/.test(password))
           throw new Error(`Password for Member ${i+1} must be 4–6 digits.`);
         members[i] = { name, age, phone, password };
@@ -970,19 +1293,97 @@
       };
       await set(ref(db, `ration_cards/${uid}`), payload);
       showToast(`Card ${uid} updated successfully!`, "success");
-      allCardsCache[uid] = payload;
+      if (allCardsCache[uid]) allCardsCache[uid] = payload;
       updateCardsBadge();
     } catch (err) {
-      console.error("Firebase update error:", err);
-      showToast(err.message, "error");
+      console.error(err); showToast(err.message, "error");
     } finally {
-      btn.classList.remove("loading"); btn.disabled = false;
+      const lbl = document.getElementById("btn-save-edit")?.querySelector(".se-label");
+      if (lbl) lbl.classList.remove("spin-after");
+      btn.disabled = false;
     }
   }
 
-  function escHtml(str) {
-    return String(str).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  /* ══════════════════════════════════════════════════════════════════════
+     DELETE TAB — standalone UID lookup
+  ══════════════════════════════════════════════════════════════════════ */
+  document.getElementById("btn-find-card").addEventListener("click", () => {
+    const uid = document.getElementById("delete-uid-input").value.trim().toUpperCase();
+    if (uid.length !== 8) { showToast("Enter a valid 8-character Card UID", "error"); return; }
+    findCardForDelete(uid);
+  });
+  document.getElementById("delete-uid-input").addEventListener("keydown", e => {
+    if (e.key === "Enter") document.getElementById("btn-find-card").click();
+  });
+
+  async function findCardForDelete(uid) {
+    const btn = document.getElementById("btn-find-card");
+    const box = document.getElementById("delete-preview-box");
+    btn.classList.add("spin-after"); btn.disabled = true;
+    box.style.display = "none";
+    try {
+      const snap = await get(ref(db, `ration_cards/${uid}`));
+      if (!snap.exists()) throw new Error(`Card "${uid}" not found.`);
+      const c = snap.val();
+      document.getElementById("cpb-uid").textContent     = uid;
+      document.getElementById("cpb-members").textContent  = c.total_members;
+      document.getElementById("cpb-rice").textContent     = `${(c.monthly_quota?.rice_kg_per_person||5)*c.total_members} kg/month`;
+      document.getElementById("cpb-sugar").textContent    = c.monthly_quota?.sugar_pkts_total ?? c.total_members;
+      const names = Object.values(c.members||{}).map(m => m.name).join(", ");
+      document.getElementById("cpb-names").textContent    = names || "—";
+      box.style.display = "block";
+      box.scrollIntoView({ behavior:"smooth", block:"nearest" });
+    } catch (err) {
+      console.error(err); showToast(err.message, "error");
+    } finally {
+      btn.classList.remove("spin-after"); btn.disabled = false;
+    }
   }
+
+  document.getElementById("btn-do-delete").addEventListener("click", () => {
+    const uid = document.getElementById("delete-uid-input").value.trim().toUpperCase();
+    if (!uid) return;
+    openConfirmDeleteFromTab(uid);
+  });
+
+  // Separate confirm handler for Delete tab (no cache to update)
+  function openConfirmDeleteFromTab(uid) {
+    pendingDeleteUID = uid;
+    document.getElementById("confirm-uid-text").textContent = uid;
+    // Override confirm button action to also hide preview box
+    const overlay = document.getElementById("confirm-overlay");
+    overlay.dataset.source = "delete-tab";
+    overlay.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  // Override the confirm delete button to handle both sources
+  document.getElementById("confirm-delete-btn").addEventListener("click", async () => {
+    if (!pendingDeleteUID) return;
+    const uid = pendingDeleteUID;
+    const btn = document.getElementById("confirm-delete-btn");
+    btn.classList.add("loading"); btn.disabled = true;
+    try {
+      await remove(ref(db, `ration_cards/${uid}`));
+      delete allCardsCache[uid];
+      showToast(`Card ${uid} permanently deleted.`, "success");
+      closeConfirmDelete();
+      // If source was delete-tab, hide preview
+      document.getElementById("delete-preview-box").style.display = "none";
+      document.getElementById("delete-uid-input").value = "";
+      // Refresh view grid if it has been loaded
+      if (Object.keys(allCardsCache).length >= 0) {
+        updateCardsBadge(Object.keys(allCardsCache).length);
+        const wrap = document.getElementById("cards-list-wrap");
+        if (wrap.querySelector(".cards-grid")) renderCardsGrid(allCardsCache);
+      }
+    } catch (err) {
+      console.error(err); showToast(err.message, "error");
+    } finally {
+      btn.classList.remove("loading"); btn.disabled = false;
+    }
+  }, { once: false });
+
 </script>
 </body>
 </html>
